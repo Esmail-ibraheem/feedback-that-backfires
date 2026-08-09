@@ -398,6 +398,19 @@ def main() -> None:
         f.add("ScalingRsq", float(row["r2"].iloc[0]) if len(row) else None, "{:.2f}")
         cross = float(row["zero_crossing_params_b"].iloc[0]) if len(row) else None
         f.add("ZeroCrossing", cross, "{:.1f}B")
+        # Leave-one-model-out spread of that same extrapolation.
+        loo = fits[(fits["env"] == "toolshed")
+                   & (fits["family"].astype(str).str.startswith("loo:"))]
+        if len(loo):
+            lo, hi = float(loo["zero_crossing_params_b"].min()), float(
+                loo["zero_crossing_params_b"].max())
+            f.add("ZeroCrossingLoMin", lo, "{:.0f}B")
+            f.add("ZeroCrossingLoMax", hi, "{:.0f}B")
+            f.add("ZeroCrossingLoRatio", hi / lo if lo else None, "{:.1f}")
+        else:
+            for k in ("ZeroCrossingLoMin", "ZeroCrossingLoMax",
+                      "ZeroCrossingLoRatio"):
+                f.add(k, None)
     else:
         f.add("ScalingSlope", None)
         f.add("ScalingRsq", None)

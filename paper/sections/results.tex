@@ -97,8 +97,14 @@ better.
 
 A log-linear fit over the range we can run has slope \ScalingSlope\ nats per
 decade of parameters ($R^2 = \ScalingRsq$) and reaches zero at
-\ZeroCrossing. We report that number only to make the point that it is an
-extrapolation several times beyond our largest model, and we do not claim it.
+\ZeroCrossing. We report that number in order to argue against it. Refitting
+with each model held out in turn moves the crossing from
+\ZeroCrossingLoMin\ to \ZeroCrossingLoMax, a factor of
+\ZeroCrossingLoRatio\ decided by which six checkpoints happened to be
+affordable. That is what an extrapolation an order of magnitude beyond the
+measured range is worth here, and it is why we treat the pooled fit as
+descriptive of a direction rather than as a prediction of a threshold.
+
 Two things could be true at 8B or 70B that our data cannot distinguish: the
 copying term could keep shrinking on the same line, or the semantic term could
 begin to dominate. Since our measurement costs a few hundred forward passes per

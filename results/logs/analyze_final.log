@@ -1,0 +1,42 @@
+models: ['llama3.2-1b', 'qwen2.5-0.5b', 'qwen3-0.6b', 'smollm2-1.7b', 'smollm2-135m', 'smollm2-360m']
+envs:   ['coderepair', 'toolshed']
+
+--- corrective gain G (nats), by model ---
+  coderepair  SmolLM2-135M      0.14B  G = -82.610 [-93.889, -71.785]  d_z=-1.87  p=0.0001  n=62/62 clusters
+  coderepair  SmolLM2-360M      0.36B  G = -70.349 [-79.396, -61.706]  d_z=-2.01  p=0.0001  n=60/60 clusters
+  coderepair  Qwen2.5-0.5B      0.49B  G = -67.683 [-76.711, -59.151]  d_z=-1.94  p=0.0001  n=60/60 clusters
+  toolshed    SmolLM2-135M      0.14B  G = -23.921 [-25.859, -22.087]  d_z=-2.38  p=0.0001  n=100/48 clusters
+  toolshed    SmolLM2-360M      0.36B  G = -18.620 [-21.002, -16.379]  d_z=-1.67  p=0.0001  n=100/48 clusters
+  toolshed    Qwen2.5-0.5B      0.49B  G = -13.910 [-16.125, -11.816]  d_z=-1.12  p=0.0001  n=100/48 clusters
+  toolshed    Qwen3-0.6B        0.60B  G = -21.497 [-25.070, -18.184]  d_z=-1.49  p=0.0001  n=68/39 clusters
+  toolshed    Llama-3.2-1B      1.24B  G = -12.412 [-15.707, -9.624]  d_z=-1.43  p=0.0001  n=35/21 clusters
+  toolshed    SmolLM2-1.7B      1.71B  G = -13.908 [-15.533, -12.355]  d_z=-1.80  p=0.0001  n=100/45 clusters
+
+--- decomposition (copy / sem) ---
+  coderepair  SmolLM2-135M     copy      +83.996 [+73.159, +95.334]
+  coderepair  SmolLM2-360M     copy      +71.020 [+62.080, +80.279]
+  coderepair  Qwen2.5-0.5B     copy      +69.498 [+61.009, +78.501]
+  coderepair  SmolLM2-135M     sem        -1.387 [-1.884, -0.913]
+  coderepair  SmolLM2-360M     sem        -0.671 [-1.163, -0.192]
+  coderepair  Qwen2.5-0.5B     sem        -1.815 [-2.482, -1.190]
+  coderepair  SmolLM2-135M     polarity   -1.569 [-1.998, -1.150]
+  coderepair  SmolLM2-360M     polarity   +2.544 [+2.013, +3.123]
+  coderepair  Qwen2.5-0.5B     polarity   +2.948 [+2.232, +3.620]
+  toolshed    SmolLM2-135M     copy      +21.691 [+19.543, +23.940]
+  toolshed    SmolLM2-360M     copy      +16.083 [+13.895, +18.432]
+  toolshed    Qwen2.5-0.5B     copy       +9.908 [+7.586, +12.247]
+  toolshed    Qwen3-0.6B       copy      +18.248 [+14.752, +21.950]
+  toolshed    Llama-3.2-1B     copy       +9.416 [+7.227, +11.907]
+  toolshed    SmolLM2-1.7B     copy      +11.671 [+10.366, +12.966]
+  toolshed    SmolLM2-135M     sem        +2.230 [+1.588, +2.902]
+  toolshed    SmolLM2-360M     sem        +2.537 [+1.982, +3.160]
+  toolshed    Qwen2.5-0.5B     sem        +4.002 [+2.816, +5.280]
+  toolshed    Qwen3-0.6B       sem        +2.783 [+1.558, +3.963]
+  toolshed    Llama-3.2-1B     sem        +3.260 [+2.056, +4.615]
+  toolshed    SmolLM2-1.7B     sem        +2.237 [+1.437, +3.115]
+  toolshed    SmolLM2-135M     polarity   -0.538 [-0.926, -0.155]
+  toolshed    SmolLM2-360M     polarity   +0.817 [+0.201, +1.485]
+  toolshed    Qwen2.5-0.5B     polarity   +2.902 [+1.733, +4.084]
+  toolshed    Qwen3-0.6B       polarity   +0.467 [-0.406, +1.282]
+  toolshed    Llama-3.2-1B     polarity   +0.168 [-1.074, +1.302]
+  toolshed    SmolLM2-1.7B     polarity   +0.987 [+0.591, +1.413]

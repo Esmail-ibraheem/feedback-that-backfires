@@ -7,43 +7,43 @@
 \newcommand{\NumCodeItemsBuilt}{266}
 \newcommand{\NumCodeTasks}{132}
 \newcommand{\NumCodeOperators}{10}
-\newcommand{\CacheSaving}{86\%}
+\newcommand{\CacheSaving}{87\%}
 \newcommand{\NumProbeItemsToolshed}{100}
 \newcommand{\NumProbeItemsCode}{60}
 \newcommand{\TorchVersion}{2.4.0+cpu}
 \newcommand{\CPUName}{Intel Core i7-6820HQ CPU @ 2.70GHz}
-\newcommand{\TransformersVersion}{4.56.1}
+\newcommand{\TransformersVersion}{4.45.0}
 \newcommand{\TransformersVersions}{4.45.0 and 4.56.1}
 \newcommand{\NumTransformersVersions}{2}
 \newcommand{\DriftChecked}{210}
 \newcommand{\DriftMax}{$4.9\times 10^{-5}$}
 \newcommand{\DriftModel}{smollm2-135m}
-\newcommand{\NumModels}{5}
+\newcommand{\NumModels}{6}
 \newcommand{\NumFamilies}{4}
 \newcommand{\SmallestModel}{135M}
-\newcommand{\LargestModel}{1.2B}
+\newcommand{\LargestModel}{1.7B}
 \newcommand{\FamilyList}{Llama-3.2, Qwen2.5, Qwen3, SmolLM2}
-\newcommand{\NumModelsNegativeG}{5}
-\newcommand{\NumModelsToolshed}{5}
+\newcommand{\NumModelsNegativeG}{6}
+\newcommand{\NumModelsToolshed}{6}
 \newcommand{\WorstG}{\textminus 23.92}
 \newcommand{\WorstGModel}{SmolLM2-135M}
 \newcommand{\BestG}{\textminus 12.41}
 \newcommand{\BestGModel}{Llama-3.2-1B}
-\newcommand{\MeanG}{\textminus 18.07}
-\newcommand{\OddsPerToken}{3.0}
-\newcommand{\MeanCopy}{15.07}
+\newcommand{\MeanG}{\textminus 17.38}
+\newcommand{\OddsPerToken}{2.8}
+\newcommand{\MeanCopy}{14.50}
 \newcommand{\MaxCopy}{21.69}
 \newcommand{\MinCopy}{9.42}
-\newcommand{\MeanSem}{2.96}
+\newcommand{\MeanSem}{2.84}
 \newcommand{\MaxSem}{4.00}
 \newcommand{\MinSem}{2.23}
-\newcommand{\MeanPol}{0.76}
+\newcommand{\MeanPol}{0.80}
 \newcommand{\MaxPol}{2.90}
 \newcommand{\MinPol}{\textminus 0.54}
-\newcommand{\MeanRepair}{4.71}
+\newcommand{\MeanRepair}{4.30}
 \newcommand{\MaxRepair}{11.34}
 \newcommand{\MinRepair}{\textminus 1.25}
-\newcommand{\MeanMarginShift}{\textminus 13.42}
+\newcommand{\MeanMarginShift}{\textminus 13.12}
 \newcommand{\MaxMarginShift}{\textminus 9.60}
 \newcommand{\MinMarginShift}{\textminus 17.54}
 \newcommand{\CopyPad}{16.64}
@@ -64,8 +64,8 @@
 \newcommand{\DVerboseCI}{\textminus 0.20\,\ci{\textminus 0.48}{+0.08}}
 \newcommand{\DEarly}{\textminus 0.88}
 \newcommand{\DEarlyCI}{\textminus 0.88\,\ci{\textminus 1.41}{\textminus 0.37}}
-\newcommand{\DAbstract}{\textminus 13.96}
-\newcommand{\DAbstractCI}{\textminus 13.96\,\ci{\textminus 16.11}{\textminus 12.00}}
+\newcommand{\DAbstract}{\textminus 13.22}
+\newcommand{\DAbstractCI}{\textminus 13.22\,\ci{\textminus 15.30}{\textminus 11.34}}
 \newcommand{\DAbstractMin}{\textminus 18.62}
 \newcommand{\DAbstractMinCI}{\textminus 18.62\,\ci{\textminus 20.67}{\textminus 16.71}}
 \newcommand{\DAbstractMatched}{\textminus 16.37}
@@ -73,27 +73,30 @@
 \newcommand{\StringSpecificBound}{13.7}
 \newcommand{\MeanGCode}{\textminus 73.55}
 \newcommand{\NumModelsCode}{3}
-\newcommand{\GPerTokenTool}{\textminus 1.09}
+\newcommand{\GPerTokenTool}{\textminus 1.03}
 \newcommand{\FracNegTool}{90\%}
 \newcommand{\GPerTokenCode}{\textminus 1.18}
 \newcommand{\FracNegCode}{100\%}
-\newcommand{\MeanGAbstract}{\textminus 4.08}
-\newcommand{\AbstractRemoved}{77\%}
+\newcommand{\MeanGAbstract}{\textminus 4.12}
+\newcommand{\AbstractRemoved}{76\%}
 \newcommand{\MaxCopySemRatio}{106}
-\newcommand{\MedianCopySemRatio}{8}
+\newcommand{\MedianCopySemRatio}{7}
 \newcommand{\CopySemRatioTool}{6}
 \newcommand{\CopySemRatioCode}{61}
 \newcommand{\CopyShare}{83\%}
 \newcommand{\PRepeatPreMean}{0.06}
 \newcommand{\PRepeatPreCode}{0.09}
-\newcommand{\PRepeatPostMean}{0.55}
+\newcommand{\PRepeatPostMean}{0.54}
 \newcommand{\PRepeatPostCode}{0.88}
 \newcommand{\GreedyPreMean}{0\%}
-\newcommand{\GreedyPostMean}{17\%}
+\newcommand{\GreedyPostMean}{19\%}
 \newcommand{\GreedyAbstractMean}{0\%}
-\newcommand{\ScalingSlope}{10.88}
-\newcommand{\ScalingRsq}{0.61}
-\newcommand{\ZeroCrossing}{20.5B}
+\newcommand{\ScalingSlope}{9.51}
+\newcommand{\ScalingRsq}{0.64}
+\newcommand{\ZeroCrossing}{37.6B}
+\newcommand{\ZeroCrossingLoMin}{20B}
+\newcommand{\ZeroCrossingLoMax}{79B}
+\newcommand{\ZeroCrossingLoRatio}{3.8}
 \newcommand{\AgentVerbatimSuccess}{42\%}
 \newcommand{\AgentVerbatimStuck}{29\%}
 \newcommand{\AgentVerbatimRepeat}{31\%}

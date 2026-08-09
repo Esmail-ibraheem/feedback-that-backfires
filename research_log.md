@@ -935,3 +935,39 @@ recomputed.
 The general lesson is narrow and worth keeping: a LaTeX build that reports no
 errors has checked that the document is well-formed, not that it is true. Six of
 the seven errors above compiled silently.
+
+---
+
+## The sixth model, and what it did to the extrapolation
+
+SmolLM2-1.7B finished: 100 items, 720 scores, 6537s on one CPU thread, 94.1%
+of token positions saved by prefix reuse. It is the first run whose metadata
+carries the environment record, so the provenance gap noted above is closed
+going forward.
+
+The ladder is now six checkpoints over 135M-1.7B. Within SmolLM2, which is the
+comparison the scaling claim actually rests on, the gain is monotone in size
+across three points: -23.92, -18.62, -13.91 nats for 135M, 360M and 1.7B. That
+is a stronger form of the within-family argument than two points could give.
+
+The interesting part was the pooled fit. Adding one model *inside* the measured
+range moved the extrapolated zero-crossing from 20.5B to 37.6B, near enough to
+doubling it. That is not a small perturbation of a number the paper was already
+hedging, so I measured the sensitivity instead of describing it: refitting with
+each model held out in turn puts the crossing anywhere from 20B to 79B, a
+factor of 3.8 decided entirely by which six checkpoints happened to fit in
+17 GB of RAM.
+
+The scaling paragraph now reports the crossing in order to argue against it,
+and the leave-one-out spread is computed in `analyze_probe.py` rather than
+asserted in prose. This is a better result than the hedge it replaces: "we
+decline to extrapolate" is a posture, whereas "the extrapolation moves by 3.8x
+under leave-one-out" is a measurement. It also sharpens what the 8B experiment
+would actually buy, which is not a better estimate of the crossing but a test
+of whether the log-linear form holds outside the range at all.
+
+Headline numbers moved as expected and all of them regenerated without a hand
+edit: mean G -18.07 to -17.38, per-token -1.09 to -1.03, slope 10.88 to 9.51,
+R-squared 0.61 to 0.64. The appendix note listing runs excluded for being
+incomplete is now empty, which is the outcome the threshold mechanism was built
+to produce.

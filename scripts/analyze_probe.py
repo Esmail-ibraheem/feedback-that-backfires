@@ -293,6 +293,28 @@ def main() -> None:
                         else np.nan,
                     }
                 )
+        # How much the extrapolated zero-crossing depends on any one model.
+        # The crossing lies far outside the measured range, so it is a long
+        # lever on a short fit; refitting with each model held out says how
+        # long. This is the evidence for declining to claim the number, and it
+        # is generated rather than asserted.
+        if len(sub) >= 4:
+            for _, held in sub.iterrows():
+                loo = sub[sub["model"] != held["model"]]
+                slope, intercept, r2 = weighted_least_squares(
+                    loo["log_params"], loo["mean"])
+                cross = -intercept / slope if slope else np.nan
+                fits.append({
+                    "env": env_name,
+                    "family": f"loo:-{held['label']}",
+                    "n_models": len(loo),
+                    "slope_per_decade": slope,
+                    "intercept": intercept,
+                    "r2": r2,
+                    "zero_crossing_params_b": float(10**cross / 1e9)
+                    if slope else np.nan,
+                })
+
     pd.DataFrame(fits).to_csv(
         os.path.join(args.out_dir, "probe_scaling_fits.csv"), index=False
     )
