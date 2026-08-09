@@ -1,0 +1,119 @@
+\section{Related work}
+\label{sec:related}
+
+\paragraph{Agents that act, observe, and try again.}
+ReAct \citep{yao2023react} established the template that dominates practice:
+interleave a written action with the environment's observation and let the model
+condition on the growing transcript. Reflexion \citep{shinn2023reflexion},
+Self-Refine \citep{madaan2023selfrefine} and self-debugging
+\citep{chen2024selfdebug} all build on it, adding an explicit critique or a test
+result to the same append-only transcript. MINT \citep{wang2024mint} evaluates
+multi-turn interaction with tools and language feedback directly and finds
+feedback helpful in aggregate. The shared premise is that appending the failure
+is informative; what none of these measure is the counterfactual we study here,
+namely what the appended \emph{action string} does on its own.
+
+\paragraph{Doubts about self-correction.}
+A parallel line argues that models cannot reliably correct themselves without an
+external signal \citep{huang2024selfcorrect,valmeekam2023critiquing}. Our result
+is not a restatement of that. Those papers ask whether a model can \emph{judge}
+its own output; we hold the judgement fixed, since the environment executes the
+action and the verdict is ground truth, and ask whether the model's next-token
+distribution moves in the direction the verdict implies. The failure we document
+survives perfect feedback.
+
+\paragraph{Context contamination.}
+The closest prior work is \citet{yang2026contamination}, who formalises the
+observation that a retry in a context still containing the failed attempt has a
+higher error rate than a clean one. The Context-Contaminated Restart Model gives
+closed-form results for success under a budget and fits SWE-bench Verified data
+with a cascade ratio $\epsilon_1/\epsilon_0 = 7.1$, showing that assuming
+independent retries overestimates pass@3 by 17.4 points. That work establishes
+the phenomenon at the level of task statistics and concludes that the remedy is
+to \emph{clear the context before retrying}. Our contribution is orthogonal and,
+we think, complementary in a useful way: we ask which \emph{part} of the context
+does the contaminating, measure it at the token level, and find that it is the
+failed action's surface form rather than the error message. That matters
+practically, because clearing the context discards the diagnosis along with the
+hazard. In our terms, clean restart is the \emph{drop} harness, and it is a
+baseline we evaluate rather than an endpoint.
+
+\paragraph{Agents that get stuck.}
+Repetition in agent trajectories is widely reported and usually treated as an
+engineering defect. \citet{hou2026infiniteloops} detect unbounded feedback paths
+by static analysis of agent \emph{source code} across 6{,}549 repositories,
+which is complementary to our question: their loops are properties of the
+program, ours of the policy. \citet{wang2025hellorhighwater} show that agents
+struggle to formulate alternative plans after an external failure even when the task is guaranteed to remain solvable, which is a behavioural counterpart
+to what we measure distributionally. Most striking is \citet{zenkri2026fidelity}, who find
+on a mechanical puzzle that \emph{degrading} an embodied agent's observations
+improves success up to $2.85\times$, and trace the gain to fewer repetitive
+action loops. That is independent evidence that the observation channel can be
+net harmful; we supply the token-level mechanism and a fix that does not require
+corrupting the observations.
+
+\paragraph{Repetition and copying in language models.}
+\citet{xu2022breaktheloop} showed that sentence repetition is
+self-reinforcing, in that the more often a sentence appears in the context the
+more likely the model is to produce it again, and proposed a training-time
+penalty.
+Degeneration \citep{holtzman2020degeneration}, unlikelihood training
+\citep{welleck2020unlikelihood} and repetition penalties \citep{keskar2019ctrl}
+address the same tendency in open-ended generation. Mechanistically, induction
+heads \citep{olsson2022induction} implement prefix matching and copying, copy
+suppression \citep{mcdougall2024copysuppression} implements a counterweight, and
+\citet{repetitionneurons2025} isolate components whose over-dominance yields the
+``repetition curse''. All of this concerns generation \emph{without} a competing
+signal. The agent loop is the interesting case precisely because a competing
+signal is present by design, and the question is which one wins.
+
+\paragraph{Negative instructions.}
+Naming something in a prompt raises its probability even under an instruction
+not to produce it, a pattern documented for topic avoidance
+\citep{castricato2024pinkelephants,nopinkelephant2024} and for negation more
+broadly \citep{negation2025pinkelephant}. Our $\copyterm$ is the same family of
+effect measured inside a trajectory rather than a prompt, and
+Section~\ref{sec:agent} shows that the corresponding remedy, adding a
+``do not repeat'' instruction, behaves exactly as that literature predicts.
+
+\paragraph{Small models as agents.}
+\citet{belcak2025slmagents} argue that most agentic sub-tasks are within reach of
+small models, making the harness the deciding factor.
+\citet{toolschemas2025} adapt tool schemas rather than models, and
+\citet{constrainttax2026} document that structured-output constraints can
+suppress tool calling outright. Constrained decoding is well developed as a
+\emph{format} device \citep{willard2023outlines}, with known costs to free-form
+reasoning \citep{tam2024speakfreely}. We use it differently: not to enforce a
+grammar, but to make one specific previously-failed string unreachable. To our
+knowledge the ban-what-already-failed use of constrained decoding has not been
+evaluated as an agent-reliability intervention.
+
+\paragraph{Spending more compute at test time.}
+A large literature buys accuracy with repeated attempts
+\citep{brown2024monkeys,snell2024testtime}, subject to the quality of whatever
+selects among them \citep{stroebl2024inferenceflaws}. Our result is a constraint
+on that arithmetic in the sequential case. Attempts within a single trajectory
+are not independent draws: each one is conditioned on a context containing its
+predecessors, and we measure that conditioning pushing toward repetition. The
+same point is made from the outcome side by \citet{yang2026contamination}, whose
+fit implies that assuming independence overestimates pass@3 substantially. If
+extra attempts are to pay, the harness has to make them differ.
+
+\paragraph{Context management.}
+\citet{liu2024lostmiddle} showed that position within a long context matters;
+recent agent work learns to curate context, keeping compact state that includes
+records of ineffective attempts \citep{adacom2026context}. Those systems edit
+context to save tokens or to keep salient constraints in view. Our analysis
+implies a different reason to edit it, namely that the verbatim failed action
+is itself the hazard, and predicts which edit helps, which we test directly.
+
+\paragraph{Positioning.}
+Table~\ref{tab:related} summarises the difference. Prior work establishes that
+(i) repetition is self-reinforcing without feedback, (ii) agents empirically get
+stuck, and (iii) negative instructions are weak. What is missing, and what we
+provide, is the controlled measurement of whether execution feedback moves the
+action distribution in the right direction at all, a decomposition of that
+quantity into the parts a harness can and cannot change, and an intervention
+derived from the decomposition rather than from intuition.
+
+\input{tables/related_positioning}

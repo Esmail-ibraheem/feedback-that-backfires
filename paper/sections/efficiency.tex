@@ -1,0 +1,46 @@
+\section{Cost}
+\label{sec:efficiency}
+
+\paragraph{Hardware.}
+Everything in this paper was produced on one laptop CPU
+(\CPUName, four physical cores, 17\,GB RAM) with no GPU, using
+PyTorch \TorchVersion\ and Transformers \TransformersVersions\ (see
+Appendix~\ref{app:repro}), in float32. We
+report this not as a hardship but because it constrains what claims we are
+entitled to make, and because it makes the artefact reproducible by anyone.
+
+\paragraph{What the interventions cost.}
+The two interventions we recommend are close to free, which is the main reason
+they are worth reporting at all.
+
+The \emph{abstract} harness \emph{reduces} context length: a runtime-generated
+description of a failure is shorter than the failed call plus its error message.
+Its only requirement is that the runtime knows what kind of error it produced,
+which any harness that formats an error message already does. It costs no extra
+model call and adds no latency.
+
+The \emph{ban} adds one pass over the ban list per decoding step and no tokens
+at all. In our implementation the ban list holds at most a handful of short
+token sequences, and the added time is below the noise floor of our wall-clock
+measurements. Table~\ref{tab:cost} reports generated tokens, prompt tokens and
+wall-clock per rollout for each harness so that this can be checked rather than
+taken on trust; note that a harness which loops less also \emph{finishes
+earlier}, so the interventions tend to reduce total cost rather than add to it.
+
+\input{tables/agent_cost}
+
+\paragraph{What the study cost.}
+The probe is deliberately built out of teacher-forced scoring rather than
+generation. A single decoding step on this machine costs roughly as much as
+thirty scored positions, because at batch size one a forward pass is dominated
+by per-layer dispatch rather than arithmetic; measuring a distribution is
+therefore two orders of magnitude cheaper than sampling from it. Prefix reuse
+across conditions removes \CacheSaving\ of the token positions a naive
+implementation would push through the network, since our contexts share a long
+system prompt and differ only in a short tail.
+
+We also record what we could \emph{not} afford. Multi-threaded inference is
+unavailable on this machine for a reason unrelated to the science
+(Section~\ref{sec:limitations}), so all parallelism is across processes. Models
+above roughly 2B parameters do not fit alongside the rest of the workload in
+float32, which is the binding constraint on the top of our ladder.

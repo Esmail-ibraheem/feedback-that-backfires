@@ -1,0 +1,131 @@
+\section{Reproduction}
+\label{app:repro}
+
+\paragraph{Runs excluded for being incomplete.}
+\input{tables/partial_runs}
+
+\paragraph{Environment.}
+Python 3.12, PyTorch \TorchVersion\ (CPU build), on \CPUName. No GPU is used or
+required. Exact pinned versions are in \texttt{requirements.txt} and
+\texttt{environment.yml}, and the software environment is recorded in
+\texttt{results/raw/**/*.meta.json} for every run made after we started writing
+it there.
+
+The Transformers version is not single-valued: the environment was rebuilt
+partway through the study, and runs exist under \TransformersVersions. Rather
+than assert that this does not matter, we measured it.
+\texttt{scripts/check\_version\_drift.py} re-scores stored rows in the current
+environment and compares them to what is on disk; over \DriftChecked\
+(item, condition, candidate) triples for \DriftModel\ the largest disagreement
+is \DriftMax\ nats, roughly four orders of magnitude below the smallest effect
+the paper reports and consistent with float32 non-determinism in the kernel
+selection. Scoring is a deterministic forward pass, so this is the expected
+result; we record it because the alternative is asking the reader to take it on
+trust.
+
+\paragraph{Pipeline.}
+\begin{verbatim}
+python scripts/download_models.py --ladder
+python scripts/build_items.py
+python scripts/verify_scoring.py --model smollm2-135m
+python scripts/launch_probes.py --phases ABC
+python scripts/run_agent_study.py --models qwen2.5-0.5b \
+       --env toolshed --n-tasks 30 --max-steps 8
+python scripts/analyze_probe.py
+python scripts/analyze_agent.py
+python scripts/make_facts.py && python scripts/make_figures.py
+\end{verbatim}
+
+Every stage is resumable. Probe results are keyed by
+(item, condition, candidate) and existing keys are skipped, so an interrupted
+run continues where it stopped; rollout files are written per
+(model, environment, harness, temperature, seed).
+
+\paragraph{Seeds.}
+All randomness derives from base seed \texttt{20260808} through named
+sub-streams (\texttt{slmecho.seeding.derive\_seed}), so re-running one part of
+the study reproduces the same items even if the surrounding loop changed. World
+generation, task instantiation, item subsampling and the bootstrap each draw
+from their own stream.
+
+\paragraph{Generation parameters.}
+Probe scoring is teacher-forced and involves no sampling. Rollouts use greedy
+decoding with a \AgentTokenCap-token cap per action, stopping at the chat template's
+end-of-turn token or at a newline (tool calls only; program repair allows
+multi-line output with a 200-token cap).
+
+\section{Probe conditions in full}
+\label{app:conditions}
+
+Each row is one way of writing the same decision point into a transcript. The
+scored action string is identical across all of them; only the observation the
+harness records differs.
+
+\input{tables/condition_reference}
+
+\section{Perturbation operators}
+\label{app:operators}
+
+Failing calls are not sampled from a model, they are constructed, so that the
+failure is of a known kind and the correct call is known exactly. Each operator
+takes a valid call and breaks it in one specific way. Examples are shown as
+they appear in the transcript, truncated where they run past the column.
+
+\input{tables/operator_reference}
+
+\section{Per-error-family results}
+\label{app:by-error}
+
+The same headline quantity, split by the kind of error the failing call
+provoked. The point of the table is the absence of structure: if the effect
+were an artefact of one error message's wording, one row would carry it.
+
+\input{tables/probe_by_error}
+
+\section{Repetition statistics on program repair}
+\label{app:repeat-code}
+
+The main text reports the repetition readouts for the simulated tool
+environment; the same quantities for MBPP program repair are below. They are
+computed identically, over the same fixed candidate set construction.
+
+\input{tables/probe_repeat_coderepair}
+
+\section{Prompts}
+\label{app:prompts}
+
+The complete system prompts, the failure-abstraction template, and the
+``do not repeat'' instruction are reproduced verbatim below; they are also
+emitted by \texttt{scripts/dump\_prompts.py} so they cannot drift from the code.
+Two typesetting conventions apply and nothing else has been altered: a line too
+long for the page is broken and the broken line ends in a backslash, and the
+few non-ASCII characters the prompts contain (an em dash, curly quotes) are
+transliterated, since the typewriter font has no glyph for them.
+
+\input{tables/prompts}
+
+\section{Example trajectories}
+\label{app:trajectories}
+
+One task under every harness, chosen by rule: the task with the most exact
+repeats under the standard harness. It is a single task and it is the worst
+one, so it illustrates rather than demonstrates, and the quantitative claims are in
+Section~\ref{sec:agent}, but it is worth reading for what it shows and
+also for what it complicates.
+
+Under \emph{verbatim}, \emph{drop} and \emph{abstract} the model writes the
+same call six times. Under the two ban harnesses it cannot, and what it
+produces instead is the same call with material accreted onto it: fragments of
+the error message under \emph{verbatim+ban}, chained
+\texttt{.replace} calls under \emph{abstract+ban}. Neither is a reconsidered
+call. \emph{verbatim+instr} is the one that behaves differently here, trying
+four distinct calls, none of them right.
+
+Two of those cut against the aggregates and we would rather show that than
+pick a friendlier task. The abstraction reduces repetition across the task set
+but does nothing on this item, and the instruction does nothing across the task
+set but changes the trajectory on this one. Task-level variance at this scale
+is large, which is why the paper's claims rest on paired comparisons over all
+tasks rather than on examples.
+
+\input{tables/qualitative_appendix}

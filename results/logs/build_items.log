@@ -1,0 +1,53 @@
+{
+  "seed": 20260808,
+  "toolshed": {
+    "n_items": 275,
+    "n_tasks": 58,
+    "operators": [
+      "arg_typo",
+      "date_format",
+      "drop_arg",
+      "hallucinated_entity",
+      "name_for_email",
+      "readonly_target",
+      "tool_typo",
+      "type_swap"
+    ],
+    "error_types": [
+      "attendee_not_found",
+      "contact_not_found",
+      "event_not_found",
+      "file_not_found",
+      "format_error",
+      "missing_argument",
+      "permission_error",
+      "team_not_found",
+      "type_error",
+      "unexpected_argument",
+      "unknown_tool",
+      "unsupported_conversion"
+    ]
+  },
+  "coderepair": {
+    "n_items": 267,
+    "n_tasks": 133,
+    "operators": [
+      "drop_negation",
+      "drop_return",
+      "drop_reverse",
+      "flip_arith",
+      "flip_bool",
+      "flip_comparison",
+      "flip_comparison2",
+      "index_shift",
+      "off_by_one",
+      "undefined_name"
+    ],
+    "error_types": [
+      "runtime_error",
+      "syntax_error",
+      "test_failure",
+      "timeout"
+    ]
+  }
+}

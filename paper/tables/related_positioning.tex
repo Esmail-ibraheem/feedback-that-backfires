@@ -1,0 +1,30 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c}
+\toprule
+ & \makecell{explicit\\failure signal} & \makecell{separates form\\from meaning} & \makecell{harness\\intervention} \\
+\midrule
+Repetition / degeneration                  & no  & no  & decoding \\
+\quad \citep{xu2022breaktheloop,holtzman2020degeneration} & & & \\
+Negative instructions                      & n/a & no  & prompt \\
+\quad \citep{castricato2024pinkelephants}  & & & \\
+Self-correction critiques                  & yes & no  & prompt \\
+\quad \citep{huang2024selfcorrect,shinn2023reflexion} & & & \\
+Agent loop detection                       & yes & no  & static analysis \\
+\quad \citep{hou2026infiniteloops}         & & & \\
+Observation-fidelity probe                 & yes & no  & degrade inputs \\
+\quad \citep{zenkri2026fidelity}           & & & \\
+Context contamination (CCRM)               & yes & no  & clear the context \\
+\quad \citep{yang2026contamination}        & & & \\
+\midrule
+This work                                  & yes & \textbf{yes} & context + decoder \\
+\bottomrule
+\end{tabular}
+\caption{Where this paper sits. The distinguishing column is the middle one:
+prior work measures the \emph{net} effect of a failure record, if it measures it
+at all, whereas the intervention that works depends on which of its two
+components dominates.}
+\label{tab:related}
+\end{table*}

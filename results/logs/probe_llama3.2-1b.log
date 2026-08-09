@@ -1,0 +1,7 @@
+[load] llama3.2-1b 1236M in 93s
+[run ] A llama3.2-1b/toolshed/core 100 items
+[load] llama3.2-1b 1236M in 74s
+[run ] A llama3.2-1b/toolshed/core 50 items
+[load] llama3.2-1b 1236M in 51s
+[run ] A llama3.2-1b/toolshed/core 50 items
+  [llama3.2-1b] 20/50 items (pre...) 1405s fwd_tok=6414 saved=94.8%

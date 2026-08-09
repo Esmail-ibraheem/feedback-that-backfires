@@ -1,0 +1,97 @@
+\section{Problem formulation}
+\label{sec:problem}
+
+\subsection{The agent loop and its feedback record}
+
+An agent solving a task $\tau$ interacts with an environment over discrete
+steps. At step $t$ the harness assembles a context $\ctxpre_t$ from the system
+prompt, the goal, and a transcript of the previous steps; the policy $\pi$
+samples an action $a_t \sim \pi(\cdot \mid \ctxpre_t)$; the environment executes
+it and returns an observation $o_t$ together with a success flag. Writing
+$\oplus$ for appending a turn pair to the transcript,
+\begin{equation}
+\ctxpre_{t+1} \;=\; \ctxpre_t \oplus (a_t, o_t).
+\label{eq:loop}
+\end{equation}
+
+Equation~\eqref{eq:loop} is the design decision this paper is about. Almost every
+agent framework implements it literally: the action the model wrote is appended
+\emph{verbatim}, and so is whatever the runtime printed in response. When the
+action fails, the transcript therefore contains the failed action's exact token
+sequence, immediately followed by text asserting that it did not work.
+
+The intent is obvious and, for capable models, well supported: the error message
+is information, and a model that reads it should avoid the action that produced
+it. We take that intent seriously enough to measure it.
+
+\subsection{Corrective gain}
+
+Fix a decision point: a context $\ctxpre$ before an attempt, an action
+$\afail$ that will fail there, its observation $o^{\times}$, and the correct
+action $\agold$. Define the \emph{corrective gain}
+\begin{equation}
+\Gain(\afail) \;=\;
+\log \pi(\afail \mid \ctxpre)
+\;-\;
+\log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\times})\right),
+\label{eq:gain}
+\end{equation}
+where $\log \pi(a \mid c) = \sum_{i} \log \pi(a_i \mid c, a_{<i})$ is the summed
+token log-probability of the action string. Both terms score \emph{the same
+string}, so their difference is exactly the change in the log-odds of writing
+that action again, and it is invariant to how long the action is or how the
+tokeniser splits it.
+
+$\Gain > 0$ is the behaviour the harness is designed to produce: after the
+failure is recorded, the failed action is less likely. $\Gain < 0$ means the
+record made the model \emph{more} likely to repeat the action; we call this
+\emph{feedback inversion}.
+
+\subsection{Decomposing the gain}
+
+Appending $(\afail, o^{\times})$ does two things at once. It places the token
+sequence of $\afail$ into the context, where the model's copying machinery can
+reach it \citep{olsson2022induction,xu2022breaktheloop}; and it asserts that this
+action failed. These pull in opposite directions, and $\Gain$ only reports the
+net result.
+
+We separate them with counterfactual observations. Let $o^{\varnothing}$ be a
+\emph{valence-free} observation, which acknowledges the call but reports neither
+success nor failure, and let $o^{\checkmark}$ be a counterfactual observation
+reporting that the same call succeeded. Then
+\begin{align}
+\copyterm &= \log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\varnothing})\right) \notag \\
+          &\quad - \log \pi(\afail \mid \ctxpre), \label{eq:copy}\\
+\semterm  &= \log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\times})\right) \notag \\
+          &\quad - \log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\varnothing})\right), \label{eq:sem}
+\end{align}
+and by construction
+\begin{equation}
+-\Gain(\afail) \;=\; \copyterm + \semterm .
+\label{eq:decomp}
+\end{equation}
+$\copyterm$ isolates what merely \emph{having written the action} does, holding
+the feedback content neutral; $\semterm$ isolates what \emph{marking it as
+failed} adds, holding the surface form fixed. We additionally report the
+polarity contrast
+\begin{equation}
+\begin{split}
+\Delta_{\mathrm{pol}} = {}& \log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\times})\right) \\
+                        & - \log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\checkmark})\right),
+\end{split}
+\label{eq:pol}
+\end{equation}
+which compares two contexts that are identical except for whether the
+observation says the call worked. A model that does not read the error at all
+has $\Delta_{\mathrm{pol}} = 0$.
+
+\subsection{What a fix would have to look like}
+
+Equation~\eqref{eq:decomp} makes the design space concrete. If $\semterm$ is the
+problem, the model does not understand the error, and the remedy is a better
+model or a clearer message. If $\copyterm$ is the problem, no amount of message
+engineering helps, because the damage is done by the presence of the string
+rather than by anything said about it; the remedies are then \emph{structural}:
+remove the surface form from the context, or make it unreachable at decoding
+time. Section~\ref{sec:agent} evaluates both, against the natural-language
+alternative of simply instructing the model not to repeat itself.

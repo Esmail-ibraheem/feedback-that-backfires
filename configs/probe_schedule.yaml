@@ -1,0 +1,63 @@
+# Probe schedule (Studies 1 and 2).
+#
+# Read by scripts/run_schedule.py; if this file is absent the script falls back
+# to the same values hard-coded as defaults, so the repository still runs with
+# no configuration at all.
+#
+# Phases:
+#   A  ToolShed, core conditions, widest ladder  -> the scaling result
+#   B  CodeRepair, core conditions               -> second environment
+#   C  ToolShed, extended conditions             -> Study-2 manipulations
+#
+# `max_per_task` caps items per task. Confidence intervals are cluster
+# bootstraps over tasks, so the number of independent tasks — not the number of
+# items — is what they depend on; capping raises it.
+
+seed: 20260808
+
+phases:
+  A:
+    env: toolshed
+    conditions: core
+    n_items: 100
+    max_per_task: 3
+    models:
+      - smollm2-135m
+      - smollm2-360m
+      - qwen2.5-0.5b
+      - qwen3-0.6b
+      - llama3.2-1b
+      - qwen2.5-1.5b
+      - smollm2-1.7b
+  B:
+    env: coderepair
+    conditions: core
+    n_items: 60
+    max_per_task: 1        # one item per MBPP problem maximises cluster count
+    models:
+      - smollm2-135m
+      - smollm2-360m
+      - qwen2.5-0.5b
+      - qwen3-0.6b
+  C:
+    env: toolshed
+    conditions: extended
+    # Kept at the same max_per_task as phase A on purpose: the stratified
+    # subsample is a prefix, so reducing n_items reuses everything already
+    # scored instead of selecting a different set of items.
+    n_items: 60
+    max_per_task: 3
+    models:
+      - smollm2-135m
+      - qwen2.5-0.5b
+      - llama3.2-1b
+
+# Peak float32 residency must stay under ~12 GB of the 17 GB available, so the
+# larger checkpoints cannot share a stage. See docs/compute.md.
+launcher_stages:
+  - name: small
+    models: [smollm2-135m, smollm2-360m, qwen2.5-0.5b, qwen3-0.6b]
+  - name: mid
+    models: [llama3.2-1b, qwen2.5-1.5b]
+  - name: large
+    models: [smollm2-1.7b]

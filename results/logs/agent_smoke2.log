@@ -1,0 +1,3 @@
+[env] toolshed: 4 tasks
+[load] qwen2.5-0.5b 494M
+[done] qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: solved 0/4 in 446s

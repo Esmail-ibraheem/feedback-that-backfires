@@ -1,0 +1,35 @@
+# Model weights. ~13 GB of Hugging Face cache; `scripts/download_models.py`
+# fetches exactly what the study needs.
+.hf/
+*.safetensors
+*.bin
+
+# Virtualenv and interpreter droppings.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# The LaTeX engine is a 70 MB vendored binary; the README says where to get it.
+tools/
+
+# LaTeX build products. main.pdf is committed on purpose: it is the artefact a
+# reader wants, and it is small.
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/*.bbl
+paper/*.toc
+paper/*.synctex.gz
+paper/preview/
+
+# Local scratch.
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Your original project brief, not part of the research artefact.
+prompt.md

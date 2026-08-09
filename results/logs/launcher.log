@@ -1,0 +1,2 @@
+=== stage small: ['smollm2-135m', 'smollm2-360m', 'qwen2.5-0.5b', 'qwen3-0.6b'] ===
+  [small] smollm2-135m exited rc=1

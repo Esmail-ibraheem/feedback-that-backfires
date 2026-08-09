@@ -1,0 +1,75 @@
+\section{Limitations}
+\label{sec:limitations}
+
+\paragraph{Scale.}
+Our ladder stops at \LargestModel\ parameters. That is a hardware limit, not a
+scientific choice: every model runs in float32 on a CPU with 17\,GB of RAM, and
+a checkpoint that does not finish enough items in the time available is
+excluded rather than reported thin (Appendix~\ref{app:repro}). The trend we
+observe is monotone in size, so the honest summary is that we have characterised
+the small-model regime and shown the direction of travel, not that we have
+located a threshold. Whether frontier-scale models invert at all is untested
+here.
+
+\paragraph{Environments.}
+ToolShed is our own construction. We built it because the central measurement
+needs counterfactual observations that no public benchmark provides, and we have
+tried to be explicit about the ways that choice could flatter us: the
+perturbation operators are ours, the error messages are ours, and the task
+templates are ours. CodeRepair is the check on that, with MBPP problems, real mutations, and
+observations written by the Python interpreter rather than by us, and it shows
+the same pattern. Neither is a long-horizon, realistic agent
+benchmark. We would expect the effect to be larger, not smaller, in settings
+with longer transcripts and more failures per trajectory, but we have not shown
+that.
+
+\paragraph{Perturbations are synthetic.}
+Failing actions come from fixed operators rather than from model samples. This buys the property the scaling claim depends on, that every model is
+probed on byte-identical items, at the cost of some realism. Sampling failures from each
+model would make the item set model-dependent and would confound size with item
+difficulty; we judged that the worse trade. The operators were chosen to match
+the mistakes small models actually make, and the rollout study, where models
+generate their own failures, is where that choice is put to the test.
+
+\paragraph{Greedy decoding.}
+Rollouts use greedy decoding, so each (model, harness) pair yields one
+trajectory per task and our intervals over rollouts come from resampling tasks
+rather than seeds. Sampling would add a variance component we have not measured.
+Greedy is the right default for a comparison of harnesses, since it removes
+decoding noise from a contrast we care about, but it is not how every deployed
+agent runs.
+
+\paragraph{Log-probabilities of whole strings.}
+Corrective gain is a difference in summed token log-probability. Summed
+quantities grow with string length, so the raw nat values are not comparable
+across environments with very different action lengths. Within an environment
+they are comparable across conditions and models because the string being scored
+is identical; the normalised repeat probability and the exact greedy repeat rate
+are provided precisely because they carry no such caveat.
+
+\paragraph{A numerical failure worth knowing about.}
+On this machine, calling \texttt{torch.set\_num\_threads($n$)} with $n > 1$
+causes the installed PyTorch build to return all-NaN logits, silently, with
+unchanged wall-clock time. We lost one complete probe run to this before
+noticing, and our first verification script failed to catch it because
+\texttt{max(0.0, nan)} returns \texttt{0.0} in Python, so a comparison of two
+NaN quantities reported perfect agreement. Model loading now ends with a forward
+pass that must produce finite logits, the scorer checks every returned logit
+row, and the verification script rejects non-finite and positive
+log-probabilities before comparing them. We record this because it is the kind
+of fault that produces a clean-looking table of fabricated numbers, and because the mitigation, which is to assert on the numerical path and not
+just on the code path, is cheap and general.
+
+\section{Broader impact}
+
+The interventions we study make small agents repeat themselves less, which
+reduces wasted tool calls, wasted tokens and the wall-clock cost of a stuck
+loop. The direct effects are mundane and mostly good. Two second-order points
+are worth naming. First, a harness that suppresses repeated failed actions makes
+an agent more persistent, and persistence is not always desirable: an agent that
+keeps trying new calls after several failures may do more damage in a
+side-effecting environment than one that gets stuck. Step budgets and
+side-effect confirmation remain necessary; nothing here replaces them. Second,
+our results make small models more usable as agents, which lowers the cost of
+running autonomous systems locally. That is broadly positive for privacy and
+access, and it also lowers the cost of running such systems without oversight.

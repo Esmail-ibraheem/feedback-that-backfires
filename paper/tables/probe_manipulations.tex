@@ -1,0 +1,26 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l c c}
+\toprule
+Harness variant & SmolLM2-135M & Qwen2.5-0.5B \\
+\midrule
+terse error text & \textminus 0.32\,\ci{\textminus 0.72}{0.02} & \textminus 0.23\,\ci{\textminus 0.64}{0.20} \\
+verbose error text & \textminus 0.09\,\ci{\textminus 0.32}{0.14} & \textminus 0.31\,\ci{\textminus 0.65}{0.02} \\
+error quotes the failed call & \textbf{1.31\,\ci{1.12}{1.51}} & 0.10\,\ci{\textminus 0.22}{0.44} \\
+failure placed before the successful steps & \textbf{\textminus 0.94\,\ci{\textminus 1.45}{\textminus 0.48}} & \textbf{\textminus 0.82\,\ci{\textminus 1.36}{\textminus 0.26}} \\
++ ``do not repeat'' instruction & \textbf{0.16\,\ci{0.06}{0.27}} & \textminus 0.02\,\ci{\textminus 0.20}{0.15} \\
+the same call failed twice & \textbf{3.06\,\ci{2.78}{3.36}} & \textbf{3.61\,\ci{3.12}{4.08}} \\
+the same call failed three times & \textbf{3.29\,\ci{3.01}{3.59}} & \textbf{4.78\,\ci{4.18}{5.37}} \\
+placebo: a \emph{different} call failed & \textbf{\textminus 15.71\,\ci{\textminus 17.38}{\textminus 14.23}} & \textbf{\textminus 11.71\,\ci{\textminus 13.28}{\textminus 10.18}} \\
+abstracted failure (no verbatim call) & \textbf{\textminus 21.68\,\ci{\textminus 23.20}{\textminus 20.14}} & \textbf{\textminus 11.05\,\ci{\textminus 12.80}{\textminus 9.39}} \\
+\quad bare marker, no diagnosis & \textbf{\textminus 24.23\,\ci{\textminus 26.30}{\textminus 22.32}} & \textbf{\textminus 13.01\,\ci{\textminus 15.04}{\textminus 11.10}} \\
+\bottomrule
+\end{tabular}
+\caption{Harness variants, as \emph{paired} changes in the log-probability of re-emitting the failed call, relative to the standard harness on the same items. Positive means the variant makes repetition \emph{more} likely; negative means less. Every row uses the same items and the same failed call, and only how the failure is written into the transcript changes.}
+\label{tab:probe-manipulations}
+\end{table*}

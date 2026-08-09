@@ -1,0 +1,23 @@
+# Conda equivalent of requirements.txt. CPU-only by design: no CUDA packages.
+name: slmecho
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - numpy>=1.26
+  - pandas>=2.1
+  - scipy>=1.14
+  - scikit-learn>=1.5
+  - matplotlib>=3.9
+  - pyyaml>=6.0
+  - tqdm>=4.66
+  - pip:
+      - torch>=2.4,<3          # install the CPU build for your platform
+      - transformers==4.56.1
+      - tokenizers>=0.22,<0.23
+      - accelerate>=1.0
+      - safetensors>=0.4.5
+      - huggingface-hub>=0.34,<1.0
+      - sentencepiece>=0.2.0
+      - statsmodels>=0.14

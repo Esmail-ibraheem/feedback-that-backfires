@@ -1,0 +1,146 @@
+\section{Execution feedback inverts}
+\label{sec:results}
+
+\subsection{The headline measurement}
+
+Table~\ref{tab:probe-main-toolshed} reports the corrective gain and its
+decomposition on ToolShed. The gain is negative for every model we tested:
+recording a failed call and its error message in the transcript makes the model
+\emph{more} likely to write that exact call again, by \MeanG\ nats on average.
+The intervals exclude zero for \NumModelsNegativeG\ of
+\NumModelsToolshed\ models.
+
+\input{tables/probe_main_toolshed}
+
+Nats are hard to feel, so Table~\ref{tab:probe-repeat-toolshed} restates the
+same measurement two ways. The normalised probability of re-emitting the failed
+call, over a fixed four-action candidate set, moves from near the floor before
+the attempt to a large fraction after it. And greedy decoding, which is what the agent would actually have written,
+reproduces the failed call \emph{token for
+token} on \GreedyPostMean\ of items after the failure, against \GreedyPreMean\
+before it.
+
+\input{tables/probe_repeat_toolshed}
+
+\subsection{It is the string, not the message}
+
+Figure~\ref{fig:decomposition} splits $-\Gain$ into the two terms of
+Eq.~\eqref{eq:decomp}. The surface-form term $\copyterm$, which is the effect of the call being
+present in the transcript at all under a feedback-neutral observation,
+accounts for the great majority of the total.
+
+The semantic term $\semterm$ is small, and its sign is not even consistent
+across environments. On ToolShed it is slightly positive: the error message
+nudges the failed call \emph{further up}, plausibly because explaining what went
+wrong requires naming the tool and the offending argument again. On CodeRepair
+it is slightly negative, so a Python traceback does push the model away from the
+program that produced it. We want to be careful here, because the second case is
+the one that matters for the framing: the claim is not that these models cannot
+read error messages. Sometimes they can. The claim is that whatever reading
+happens is swamped. On CodeRepair the median ratio between the two terms is
+about $\CopySemRatioCode{:}1$ in favour of the surface form, against
+$\CopySemRatioTool{:}1$ on tool calls.
+
+The robustness table (Table~\ref{tab:probe-robustness}) shows the decomposition
+is insensitive to which reference observation defines ``neutral''. Referencing
+$\copyterm$ and $\semterm$ to the counterfactual \emph{success} observation
+instead of the valence-free one leaves the picture unchanged, and the two
+bracket any reasonable notion of neutrality.
+
+\input{tables/probe_robustness}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig3_decomposition}
+\caption{Where the inversion comes from. Bars decompose $-\Gain$ into the effect
+of the failed call being in the context (blue) and the additional effect of
+marking it as failed (orange); black dots are the total. Error bars are 95\%
+cluster bootstrap intervals. If the problem were that the model does not
+understand the error, the orange bars would be large and negative.}
+\label{fig:decomposition}
+\end{figure}
+
+This is the paper's central claim, and it decides the design question posed in
+Section~\ref{sec:problem}. The harness is not failing to communicate. It is
+supplying, in the same breath, a strong reason to repeat the action and a weak
+reason not to.
+
+\subsection{Copying does not simply raise everything}
+
+An obvious objection is that copying should raise the probability of \emph{any}
+string that resembles the context, so a negative $\Gain$ may say nothing about
+decisions. It does not survive contact with the data. The correct action shares most of its tokens with the failed one, typically
+differing in one argument name or one value, so its probability rises too, by \MeanRepair\ nats on
+average. What matters for the agent's next move is the \emph{margin} between
+them, and the margin moves the wrong way: the gold-minus-failed log-probability
+gap shrinks by \MeanMarginShift\ nats once the failure is recorded
+(Table~\ref{tab:probe-robustness}, $\Delta$margin). Copying is not neutral
+noise; it advantages the wrong action specifically, because the wrong action is
+the one that was written down.
+
+\subsection{Scale}
+
+Figure~\ref{fig:scaling} plots $\Gain$ against parameter count. Two things are
+worth separating here, because they carry different amounts of evidence.
+
+Within a family, where training data is held roughly fixed, the larger
+checkpoint has the milder gain, and it does so in both environments
+independently. Across families the ordering is not strict: two checkpoints of
+similar size but different provenance can differ by several nats, which is what
+one should expect when the comparison varies training data as well as parameter
+count. We rest the scaling statement on the within-family comparison and treat
+the pooled fit as descriptive.
+
+What the decomposition adds is that the weakening is driven by $\copyterm$
+rather than by $\semterm$. Larger models copy less; they do not read the error
+better.
+
+A log-linear fit over the range we can run has slope \ScalingSlope\ nats per
+decade of parameters ($R^2 = \ScalingRsq$) and reaches zero at
+\ZeroCrossing. We report that number only to make the point that it is an
+extrapolation several times beyond our largest model, and we do not claim it.
+Two things could be true at 8B or 70B that our data cannot distinguish: the
+copying term could keep shrinking on the same line, or the semantic term could
+begin to dominate. Since our measurement costs a few hundred forward passes per
+model, this is a cheap question for anyone with the hardware to answer, and we
+would rather flag it than guess at it.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig2_scaling}
+\caption{Corrective gain against parameter count. Positive values would mean the
+failure record does what it is intended to do. \textbf{Top:} raw nats, with an independent axis per environment, since an MBPP program is roughly
+five times as many tokens as a tool call and a shared axis would flatten the
+left panel.
+\textbf{Bottom:} the same quantity per action token, where the axis \emph{is}
+shared, because the two environments landing in the same band is the point.
+Error bars are 95\% cluster bootstrap intervals; the dashed line is zero.}
+\label{fig:scaling}
+\end{figure}
+
+\subsection{The second environment, and a unit that travels}
+
+The same pattern appears in program repair, where the observations are the
+Python interpreter's own output rather than anything we wrote
+(Table~\ref{tab:probe-main-coderepair}). Actions here are whole functions, an
+order of magnitude longer than tool calls, and real tracebacks quote the
+offending source line, so the surface form is re-injected without anyone
+deciding to do so. The gain is \MeanGCode\ nats on average across
+\NumModelsCode\ models.
+
+Raw nats are not comparable between the two environments, since a program is
+roughly five times as many tokens as a tool call. Divided by action length they
+are, and the result is worth stating: the corrective gain is close to
+\emph{one nat per action token} in both environments. A single quantity of that
+size, arriving at the same value from a twelve-tool simulated workspace and from
+MBPP with real tracebacks, is the best evidence we have that the effect is a
+property of how transcripts are assembled rather than of anything specific to
+either setting.
+
+Two other quantities in Table~\ref{tab:probe-robustness} deserve mention because
+they need no distributional assumptions at all. The fraction of \emph{individual
+items} on which the gain is negative is at or near one for every model. And
+under the abstracted harness on CodeRepair the gain is positive: removing the verbatim program while keeping the
+diagnosis does not merely reduce the inversion, it reverses it.
+
+\input{tables/probe_main_coderepair}

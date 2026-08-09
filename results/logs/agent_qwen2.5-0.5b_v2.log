@@ -1,0 +1,38 @@
+[env] toolshed: 24 tasks
+[load] qwen2.5-0.5b 494M
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 5/24 rollouts (250s)
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 10/24 rollouts (510s)
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 15/24 rollouts (675s)
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 20/24 rollouts (868s)
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 24/24 rollouts (1111s)
+[done] qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: solved 10/24 new (0 resumed) in 1111s
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 5/24 rollouts (176s)
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 10/24 rollouts (414s)
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 15/24 rollouts (594s)
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 20/24 rollouts (839s)
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 24/24 rollouts (958s)
+[done] qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: solved 14/24 new (0 resumed) in 958s
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 5/24 rollouts (100s)
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 10/24 rollouts (256s)
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 15/24 rollouts (361s)
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 20/24 rollouts (599s)
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 24/24 rollouts (808s)
+[done] qwen2.5-0.5b__toolshed__drop__t0__s20260808: solved 8/24 new (0 resumed) in 808s
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 5/24 rollouts (213s)
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 10/24 rollouts (345s)
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 15/24 rollouts (479s)
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 20/24 rollouts (613s)
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 24/24 rollouts (729s)
+[done] qwen2.5-0.5b__toolshed__abstract__t0__s20260808: solved 8/24 new (0 resumed) in 729s
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 5/24 rollouts (115s)
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 10/24 rollouts (258s)
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 15/24 rollouts (419s)
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 20/24 rollouts (548s)
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 24/24 rollouts (661s)
+[done] qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: solved 10/24 new (0 resumed) in 661s
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 5/24 rollouts (116s)
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 10/24 rollouts (221s)
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 15/24 rollouts (342s)
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 20/24 rollouts (486s)
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 24/24 rollouts (609s)
+[done] qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: solved 8/24 new (0 resumed) in 609s

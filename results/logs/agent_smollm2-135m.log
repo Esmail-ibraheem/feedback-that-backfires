@@ -1,0 +1,5 @@
+[env] toolshed: 24 tasks
+[load] smollm2-135m 135M
+    smollm2-135m__toolshed__verbatim__t0__s20260808: 5/24 rollouts (236s)
+    smollm2-135m__toolshed__verbatim__t0__s20260808: 10/24 rollouts (467s)
+    smollm2-135m__toolshed__verbatim__t0__s20260808: 15/24 rollouts (768s)

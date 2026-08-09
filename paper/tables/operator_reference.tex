@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l p{0.27\linewidth} p{0.27\linewidth} l}
+\toprule
+Operator & Reference call & Perturbed call & Error family \\
+\midrule
+\texttt{arg\_typo} & \texttt{\scriptsize find\_\allowbreak{}contact(\allowbreak{}name=\allowbreak{}'Dana Bergmann')} & \texttt{\scriptsize find\_\allowbreak{}contact(\allowbreak{}contact\_\allowbreak{}name=\allowbreak{}'Dana Bergmann')} & \texttt{\scriptsize unexpected\_argument} \\
+\texttt{date\_format} & \texttt{\scriptsize list\_\allowbreak{}events(\allowbreak{}date=\allowbreak{}'2026-09-19')} & \texttt{\scriptsize list\_\allowbreak{}events(\allowbreak{}date=\allowbreak{}'September 19,\allowbreak{} 2026')} & \texttt{\scriptsize format\_error} \\
+\texttt{drop\_arg} & \texttt{\scriptsize send\_\allowbreak{}message(\allowbreak{}to=\allowbreak{}'dana.bergmann@corp.example',\allowbreak{} subject=\allowbreak{}'agenda',\allowbreak{} body=\allowbreak{}'roadmap,\allowbreak{} hiring,\allowbreak{} i\,\allowbreak{}\ldots{}} & \texttt{\scriptsize send\_\allowbreak{}message(\allowbreak{}to=\allowbreak{}'dana.bergmann@corp.example',\allowbreak{} subject=\allowbreak{}'agenda')} & \texttt{\scriptsize missing\_argument} \\
+\texttt{hallucinated\_entity} & \texttt{\scriptsize find\_\allowbreak{}contact(\allowbreak{}name=\allowbreak{}'Dana Bergmann')} & \texttt{\scriptsize find\_\allowbreak{}contact(\allowbreak{}name=\allowbreak{}'Alex Ramirez')} & \texttt{\scriptsize contact\_not\_found} \\
+\texttt{name\_for\_email} & \texttt{\scriptsize send\_\allowbreak{}message(\allowbreak{}to=\allowbreak{}'dana.bergmann@corp.example',\allowbreak{} subject=\allowbreak{}'agenda',\allowbreak{} body=\allowbreak{}'roadmap,\allowbreak{} hiring,\allowbreak{} i\,\allowbreak{}\ldots{}} & \texttt{\scriptsize send\_\allowbreak{}message(\allowbreak{}to=\allowbreak{}'Dana Bergmann',\allowbreak{} subject=\allowbreak{}'agenda',\allowbreak{} body=\allowbreak{}'roadmap,\allowbreak{} hiring,\allowbreak{} incident revie\,\allowbreak{}\ldots{}} & \texttt{\scriptsize format\_error} \\
+\texttt{readonly\_target} & \texttt{\scriptsize write\_\allowbreak{}file(\allowbreak{}path=\allowbreak{}'reports/roster.md',\allowbreak{} content=\allowbreak{}'Elena Okafor,\allowbreak{} Karim Okafor')} & \texttt{\scriptsize write\_\allowbreak{}file(\allowbreak{}path=\allowbreak{}'system/config.ini',\allowbreak{} content=\allowbreak{}'Elena Okafor,\allowbreak{} Karim Okafor')} & \texttt{\scriptsize permission\_error} \\
+\texttt{tool\_typo} & \texttt{\scriptsize find\_\allowbreak{}contact(\allowbreak{}name=\allowbreak{}'Dana Bergmann')} & \texttt{\scriptsize find\_\allowbreak{}contacts(\allowbreak{}name=\allowbreak{}'Dana Bergmann')} & \texttt{\scriptsize unknown\_tool} \\
+\texttt{type\_swap} & \texttt{\scriptsize create\_\allowbreak{}event(\allowbreak{}title=\allowbreak{}'1:1',\allowbreak{} date=\allowbreak{}'2026-10-13',\allowbreak{} time=\allowbreak{}'09:30',\allowbreak{} attendees=\allowbreak{}['karim.silva@corp.\,\allowbreak{}\ldots{}} & \texttt{\scriptsize create\_\allowbreak{}event(\allowbreak{}title=\allowbreak{}'1:1',\allowbreak{} date=\allowbreak{}'2026-10-13',\allowbreak{} time=\allowbreak{}'09:30',\allowbreak{} attendees=\allowbreak{}'karim.silva@corp.e\,\allowbreak{}\ldots{}} & \texttt{\scriptsize type\_error} \\
+\bottomrule
+\end{tabular}
+\caption{Perturbation operators used to build failing actions in ToolShed, with one instantiated example each.}
+\label{tab:operators}
+\end{table}

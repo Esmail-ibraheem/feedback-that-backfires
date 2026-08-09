@@ -1,0 +1,59 @@
+{
+  "model": "smollm2-135m",
+  "env": "toolshed",
+  "n_compared": 210,
+  "max_abs_diff": 4.863739013671875e-05,
+  "mean_abs_diff": 8.907319889182136e-06,
+  "tolerance": 0.001,
+  "passed": true,
+  "environment_now": {
+    "python": "3.12.4",
+    "torch": "2.4.0+cpu",
+    "transformers": "4.45.0",
+    "platform": "Windows-10-10.0.19042-SP0",
+    "cpu": "Intel(R) Core(TM) i7-6820HQ CPU @ 2.70GHz",
+    "threads": 1
+  },
+  "worst_rows": [
+    {
+      "item_id": "toolshed-0018-s2-name_for_email-3",
+      "condition": "pre",
+      "candidate": "distractor1",
+      "stored": -33.81940698623657,
+      "recomputed": -33.81945562362671,
+      "abs_diff": 4.863739013671875e-05
+    },
+    {
+      "item_id": "toolshed-0023-s1-readonly_target-3",
+      "condition": "fail",
+      "candidate": "distractor0",
+      "stored": -20.97569966316223,
+      "recomputed": -20.975654363632202,
+      "abs_diff": 4.5299530029296875e-05
+    },
+    {
+      "item_id": "toolshed-0018-s2-name_for_email-3",
+      "condition": "abstract",
+      "candidate": "gold",
+      "stored": -26.498356819152832,
+      "recomputed": -26.498319625854492,
+      "abs_diff": 3.719329833984375e-05
+    },
+    {
+      "item_id": "toolshed-0023-s1-readonly_target-3",
+      "condition": "fail",
+      "candidate": "gold",
+      "stored": -19.091517686843872,
+      "recomputed": -19.091487646102905,
+      "abs_diff": 3.0040740966796875e-05
+    },
+    {
+      "item_id": "toolshed-0056-s1-type_swap-3",
+      "condition": "pre",
+      "candidate": "distractor1",
+      "stored": -27.317349910736084,
+      "recomputed": -27.317322254180908,
+      "abs_diff": 2.765655517578125e-05
+    }
+  ]
+}

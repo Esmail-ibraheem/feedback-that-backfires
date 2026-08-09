@@ -1,0 +1,34 @@
+# End-to-end agent study (Study 3).
+#
+# Documents the settings used for the rollouts reported in the paper. The
+# runner takes these as command-line flags; this file is the record of what was
+# actually run, and scripts/run_agent_study.py accepts `--config` to replay it.
+
+seed: 20260808
+temperature: 0.0          # greedy: removes decoding noise from a harness contrast
+env: toolshed
+n_tasks: 24
+max_steps: 6
+max_new_tokens: 32
+
+harnesses:
+  - verbatim              # standard ReAct transcript
+  - verbatim+instr        # + an explicit "do not repeat" instruction
+  - drop                  # clean restart: the failed step is removed entirely
+  - abstract              # runtime-generated description, no verbatim call
+  - verbatim+ban          # transcript unchanged, decoder-level ban
+  - abstract+ban          # both structural interventions
+
+models:
+  - smollm2-135m
+  - qwen2.5-0.5b
+  - llama3.2-1b           # run with a reduced harness set if compute is short
+
+# Notes that matter for interpreting the numbers:
+#  * The task mix interleaves single-call tasks with the two- and three-call
+#    templates used by the probe. Without the easy tasks the smallest models
+#    score zero under every harness and the comparison is made on a floor.
+#  * A one-line format demonstration is appended to the system prompt in every
+#    condition identically (ToolShedEnv(demo=True)), for the same reason.
+#  * A task counts as solved only if the environment's goal predicate holds.
+#    There is no partial credit and no model judges any outcome.

@@ -1,0 +1,110 @@
+\paragraph{ToolShed system prompt (probe)}
+\begin{scriptsize}\begin{verbatim}
+You are a tool-using assistant working inside a small office workspace. Solve the user's request by \
+calling tools one at a time.
+
+Rules:
+- Reply with exactly one tool call and nothing else.
+- Use the form tool_name(arg=value), with keyword arguments.
+- Dates are YYYY-MM-DD and times are HH:MM.
+- When the request is fully satisfied, reply with finish().
+
+Available tools:
+- list_files(folder: str) -> list[str]
+    List the files inside a folder.
+    folder: folder name, e.g. 'notes'
+- read_file(path: str) -> str
+    Return the contents of a file.
+    path: full path, e.g. 'notes/todo.md'
+- write_file(path: str, content: str) -> str
+    Create or overwrite a file.
+    path: full path
+    content: text to store
+- delete_file(path: str) -> str
+    Delete a file.
+    path: full path
+- find_contact(name: str) -> dict
+    Look up one contact by full name.
+    name: exact full name
+- list_contacts(team: str) -> list[dict]
+    List the members of a team.
+    team: team name, e.g. 'design'
+- list_events(date: str) -> list[dict]
+    List calendar events on a date.
+    date: date as YYYY-MM-DD
+- create_event(title: str, date: str, time: str, attendees: list[str]) -> str
+    Add a calendar event.
+    title: event title
+    date: date as YYYY-MM-DD
+    time: start time as HH:MM
+    attendees: list of attendee emails
+- cancel_event(event_id: str) -> str
+    Cancel a calendar event by id.
+    event_id: event id, e.g. 'evt-4'
+- send_message(to: str, subject: str, body: str) -> str
+    Send a message to one recipient email address.
+    to: recipient email address
+    subject: subject line
+    body: message body
+- set_reminder(text: str, date: str) -> str
+    Store a reminder for a date.
+    text: reminder text
+    date: date as YYYY-MM-DD
+- convert_units(value: float, from_unit: str, to_unit: str) -> float
+    Convert a value between two units.
+    value: numeric value
+    from_unit: source unit
+    to_unit: target unit
+\end{verbatim}\end{scriptsize}
+
+\paragraph{Format demonstration appended in the agent study}
+\begin{scriptsize}\begin{verbatim}
+
+A valid reply looks exactly like this, with no prefix or explanation:
+list_files(folder='notes')
+\end{verbatim}\end{scriptsize}
+
+\paragraph{CodeRepair system prompt}
+\begin{scriptsize}\begin{verbatim}
+You are a Python programmer. The user gives a task and the tests that will be run against your code.
+
+Rules:
+- Reply with one Python function definition and nothing else.
+- Do not include the tests, comments, explanations or markdown fences.
+- Use exactly the function name that appears in the tests.
+\end{verbatim}\end{scriptsize}
+
+\paragraph{Do-not-repeat instruction}
+\begin{scriptsize}\begin{verbatim}
+Important: some of your earlier tool calls failed. Do not repeat a call that has already failed; change \
+the call before trying again.
+\end{verbatim}\end{scriptsize}
+
+\paragraph{Failure abstraction (example)}
+\begin{scriptsize}\begin{verbatim}
+[attempt 1 failed: find_contact --- an argument name was not recognised; that call is not repeatable]
+\end{verbatim}\end{scriptsize}
+
+\paragraph{Error-family glosses used by the abstraction}
+\begin{scriptsize}\begin{verbatim}
+arity_error              -> wrong number of arguments
+attendee_not_found       -> no such attendee
+contact_not_found        -> no such contact
+event_not_found          -> no such event
+file_not_found           -> no such file
+folder_not_found         -> no such folder
+format_error             -> an argument was badly formatted
+missing_argument         -> a required argument was missing
+parse_error              -> the call could not be parsed
+permission_error         -> the target was read-only
+recipient_not_found      -> no such recipient
+runtime_error            -> the code raised an exception
+state_error              -> the target was already in the requested state
+syntax_error             -> the code did not compile
+team_not_found           -> no such team
+test_failure             -> the code did not pass the tests
+type_error               -> an argument had the wrong type
+unexpected_argument      -> an argument name was not recognised
+unknown_tool             -> no such tool
+unsupported_conversion   -> that conversion is not supported
+\end{verbatim}\end{scriptsize}

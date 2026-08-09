@@ -1,0 +1,50 @@
+[load] smollm2-135m 135M in 19s
+[run ] A smollm2-135m/toolshed/core 120 items
+[load] smollm2-135m 135M in 42s
+[run ] A smollm2-135m/toolshed/core 100 items
+  [smollm2-135m] 20/100 items (pre...) 72s fwd_tok=2080 saved=94.7%
+  [smollm2-135m] 40/100 items (pre...) 439s fwd_tok=11966 saved=95.1%
+  [smollm2-135m] 60/100 items (pre...) 754s fwd_tok=21349 saved=95.2%
+  [smollm2-135m] 80/100 items (pre...) 1184s fwd_tok=31274 saved=95.2%
+  [smollm2-135m] 100/100 items (pre...) 1746s fwd_tok=42870 saved=95.0%
+[done] A smollm2-135m/toolshed/core: 1178 scores in 1746s
+[run ] B smollm2-135m/coderepair/core 60 items
+  [smollm2-135m] 20/60 items (pre...) 786s fwd_tok=64855 saved=93.1%
+  [smollm2-135m] 40/60 items (pre...) 2166s fwd_tok=93802 saved=91.0%
+  [smollm2-135m] 60/60 items (pre...) 3582s fwd_tok=122511 saved=89.2%
+[done] B smollm2-135m/coderepair/core: 810 scores in 3582s
+Traceback (most recent call last):
+  File "F:\paper\scripts\run_schedule.py", line 161, in <module>
+    main()
+  File "F:\paper\scripts\run_schedule.py", line 131, in main
+    load_items(ENV_ITEMS[env_name]),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\paper\src\slmecho\probe.py", line 443, in load_items
+    than taking a prefix) keeps every error family represented; capping items
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ProbeItem.__init__() got an unexpected keyword argument 'obs_fail_other'
+[load] smollm2-135m 135M in 51s
+[run ] A smollm2-135m/toolshed/core 100 items
+  [smollm2-135m] 20/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-135m] 40/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-135m] 60/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-135m] 80/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-135m] 100/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+[done] A smollm2-135m/toolshed/core: 0 scores in 0s
+[run ] B smollm2-135m/coderepair/core 60 items
+  [smollm2-135m] 20/60 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-135m] 40/60 items (pre...) 71s fwd_tok=1545 saved=75.5%
+  [smollm2-135m] 60/60 items (pre...) 71s fwd_tok=1545 saved=75.5%
+[done] B smollm2-135m/coderepair/core: 26 scores in 71s
+[run ] C smollm2-135m/toolshed/extended 100 items
+  [smollm2-135m] 20/100 items (neut_pad...) 1362s fwd_tok=18957 saved=93.1%
+[load] smollm2-135m 135M in 24s
+[run ] C smollm2-135m/toolshed/extended 60 items
+  [smollm2-135m] 20/60 items (neut_pad...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-135m] 40/60 items (neut_pad...) 629s fwd_tok=18805 saved=92.3%
+  [smollm2-135m] 60/60 items (neut_pad...) 1337s fwd_tok=39621 saved=92.4%
+  [smollm2-135m] 20/60 items (fail_instr...) 1454s fwd_tok=42769 saved=92.3%
+  [smollm2-135m] 40/60 items (fail_instr...) 1561s fwd_tok=45910 saved=92.2%
+  [smollm2-135m] 60/60 items (fail_instr...) 1634s fwd_tok=49634 saved=91.9%
+[done] C smollm2-135m/toolshed/extended: 794 scores in 1634s
+[schedule] complete

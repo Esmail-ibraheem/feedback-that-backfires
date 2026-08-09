@@ -1,0 +1,11 @@
+[load] smollm2-135m 135M in 16s
+[run ] A smollm2-135m/toolshed/core 120 items
+  [smollm2-135m] 20/120 items (pre...) 331s fwd_tok=8970 saved=95.4%
+  [smollm2-135m] 40/120 items (pre...) 733s fwd_tok=18194 saved=95.4%
+  [smollm2-135m] 60/120 items (pre...) 1004s fwd_tok=27148 saved=95.5%
+  [smollm2-135m] 80/120 items (pre...) 1216s fwd_tok=36910 saved=95.4%
+  [smollm2-135m] 100/120 items (pre...) 1701s fwd_tok=47381 saved=95.3%
+  [smollm2-135m] 120/120 items (pre...) 2351s fwd_tok=58404 saved=95.2%
+[done] A smollm2-135m/toolshed/core: 1680 scores in 2351s
+[run ] B smollm2-135m/coderepair/core 80 items
+  [smollm2-135m] 20/80 items (pre...) 492s fwd_tok=87212 saved=93.3%

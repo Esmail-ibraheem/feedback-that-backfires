@@ -1,0 +1,24 @@
+[load] smollm2-360m 362M in 27s
+[run ] A smollm2-360m/toolshed/core 120 items
+[load] smollm2-360m 362M in 62s
+[run ] A smollm2-360m/toolshed/core 100 items
+  [smollm2-360m] 20/100 items (pre...) 490s fwd_tok=6250 saved=95.0%
+  [smollm2-360m] 40/100 items (pre...) 1332s fwd_tok=16136 saved=95.1%
+  [smollm2-360m] 60/100 items (pre...) 2508s fwd_tok=25519 saved=95.2%
+  [smollm2-360m] 80/100 items (pre...) 4385s fwd_tok=35444 saved=95.2%
+[load] smollm2-360m 362M in 59s
+[run ] A smollm2-360m/toolshed/core 100 items
+  [smollm2-360m] 20/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-360m] 40/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-360m] 60/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-360m] 80/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [smollm2-360m] 100/100 items (pre...) 210s fwd_tok=2026 saved=92.3%
+[done] A smollm2-360m/toolshed/core: 37 scores in 210s
+[run ] B smollm2-360m/coderepair/core 60 items
+[load] smollm2-360m 362M in 26s
+[run ] B smollm2-360m/coderepair/core 60 items
+  [smollm2-360m] 20/60 items (pre...) 283s fwd_tok=7807 saved=75.0%
+  [smollm2-360m] 40/60 items (pre...) 1692s fwd_tok=34302 saved=73.7%
+  [smollm2-360m] 60/60 items (pre...) 2921s fwd_tok=63011 saved=72.6%
+[done] B smollm2-360m/coderepair/core: 659 scores in 2921s
+[schedule] complete

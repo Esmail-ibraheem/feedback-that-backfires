@@ -1,0 +1,24 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{l c c c c c}
+\toprule
+Error family & SmolLM2-135M & SmolLM2-360M & Qwen2.5-0.5B & Qwen3-0.6B & Llama-3.2-1B \\
+\midrule
+\texttt{permission\_error} & \textbf{\textminus 44.4\,\ci{\textminus 47.0}{\textminus 42.2}} & \textbf{\textminus 43.0\,\ci{\textminus 44.9}{\textminus 41.3}} & \textbf{\textminus 37.9\,\ci{\textminus 42.4}{\textminus 33.9}} & \textbf{\textminus 51.9\,\ci{\textminus 52.9}{\textminus 51.1}} & -- \\
+\texttt{contact\_not\_found} & \textbf{\textminus 34.4\,\ci{\textminus 36.4}{\textminus 31.3}} & \textbf{\textminus 21.9\,\ci{\textminus 23.0}{\textminus 20.5}} & \textbf{\textminus 27.8\,\ci{\textminus 30.9}{\textminus 26.1}} & -- & -- \\
+\texttt{format\_error} & \textbf{\textminus 22.9\,\ci{\textminus 24.5}{\textminus 21.1}} & \textbf{\textminus 18.4\,\ci{\textminus 20.1}{\textminus 16.9}} & \textbf{\textminus 15.1\,\ci{\textminus 17.8}{\textminus 12.4}} & \textbf{\textminus 23.9\,\ci{\textminus 27.5}{\textminus 19.9}} & \textbf{\textminus 14.7\,\ci{\textminus 18.2}{\textminus 11.6}} \\
+\texttt{missing\_argument} & \textbf{\textminus 17.3\,\ci{\textminus 20.2}{\textminus 13.6}} & \textbf{\textminus 15.4\,\ci{\textminus 18.6}{\textminus 11.5}} & \textbf{\textminus 10.4\,\ci{\textminus 12.0}{\textminus 8.3}} & \textbf{\textminus 22.7\,\ci{\textminus 24.7}{\textminus 19.3}} & \textbf{\textminus 9.0\,\ci{\textminus 15.0}{\textminus 1.1}} \\
+\texttt{event\_not\_found} & \textbf{\textminus 18.7\,\ci{\textminus 19.2}{\textminus 18.4}} & \textbf{\textminus 13.0\,\ci{\textminus 13.7}{\textminus 12.3}} & \textbf{\textminus 11.7\,\ci{\textminus 12.4}{\textminus 11.2}} & -- & -- \\
+\texttt{unknown\_tool} & \textbf{\textminus 18.6\,\ci{\textminus 22.4}{\textminus 15.4}} & \textbf{\textminus 13.5\,\ci{\textminus 18.9}{\textminus 9.0}} & \textbf{\textminus 9.8\,\ci{\textminus 12.3}{\textminus 7.4}} & \textbf{\textminus 16.1\,\ci{\textminus 19.9}{\textminus 13.2}} & \textbf{\textminus 11.0\,\ci{\textminus 15.4}{\textminus 7.5}} \\
+\texttt{unexpected\_argument} & \textbf{\textminus 19.0\,\ci{\textminus 22.9}{\textminus 14.8}} & \textbf{\textminus 12.3\,\ci{\textminus 16.4}{\textminus 8.8}} & \textbf{\textminus 5.9\,\ci{\textminus 10.2}{\textminus 1.1}} & \textbf{\textminus 9.1\,\ci{\textminus 13.4}{\textminus 5.5}} & \textbf{\textminus 8.6\,\ci{\textminus 11.7}{\textminus 5.8}} \\
+\texttt{type\_error} & \textbf{\textminus 18.9\,\ci{\textminus 19.6}{\textminus 18.2}} & \textbf{\textminus 11.2\,\ci{\textminus 12.6}{\textminus 9.8}} & \textminus 0.7\,\ci{\textminus 3.2}{1.8} & \textbf{\textminus 6.3\,\ci{\textminus 11.8}{\textminus 1.3}} & \textbf{\textminus 3.2\,\ci{\textminus 4.0}{\textminus 2.3}} \\
+\bottomrule
+\end{tabular}
+\caption{Corrective gain (nats) by error family on ToolShed, sorted by pooled mean. Rows are the error the failing call provoked; a broadly uniform column argues against any explanation resting on the wording of one error type.}
+\label{tab:by-error}
+\end{table}

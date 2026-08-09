@@ -1,0 +1,92 @@
+% !TeX program = pdflatex
+%
+% Build:  pdflatex main && bibtex main && pdflatex main && pdflatex main
+%
+% The preamble deliberately sticks to packages present in a standard TeX Live /
+% MiKTeX installation so the manuscript compiles without fetching anything.
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[letterpaper,margin=0.85in,columnsep=0.28in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}   % \textminus: a real minus in tables, not a hyphen
+\usepackage{times}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}      % [H]: appendix reference tables stay under their heading
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+
+% Compact confidence-interval notation used by every generated table.
+\newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+% Shorthands for the quantities defined in Section 3.
+\newcommand{\afail}{a^{\times}}
+\newcommand{\agold}{a^{\checkmark}}
+\newcommand{\Gain}{G}
+\newcommand{\copyterm}{\Delta_{\mathrm{copy}}}
+\newcommand{\semterm}{\Delta_{\mathrm{sem}}}
+\newcommand{\ctxpre}{C}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[#1]}}}
+
+% Every inline number in this manuscript is a macro generated from results/raw
+% by scripts/make_facts.py. Anything not yet measured expands to a visible
+% placeholder rather than to a plausible-looking number.
+\input{tables/facts}
+
+\title{\bf Feedback That Backfires:\\[2pt]
+Why Small Language Model Agents Repeat\\ the Call They Just Watched Fail}
+
+\author{%
+  Esmail Gumaan\\[2pt]
+  \small Code, data and every number in this paper:\\
+  \small \url{https://github.com/Esmail-ibraheem/feedback-that-backfires}
+}
+\date{}
+
+\begin{document}
+
+% Title block and abstract span the full page width; the body is two-column.
+\twocolumn[
+  \begin{@twocolumnfalse}
+    \maketitle
+    \input{sections/abstract}
+    \vspace{1.2em}
+  \end{@twocolumnfalse}
+]
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/problem}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/analysis}
+\input{sections/agent}
+\input{sections/efficiency}
+\input{sections/failure}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\clearpage
+\appendix
+\onecolumn
+\input{sections/appendix}
+
+\end{document}

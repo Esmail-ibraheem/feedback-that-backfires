@@ -1,0 +1,11 @@
+[load] qwen3-0.6b 596M in 85s
+[run ] A qwen3-0.6b/toolshed/core 100 items
+[load] qwen3-0.6b 596M in 88s
+[run ] A qwen3-0.6b/toolshed/core 100 items
+[load] qwen3-0.6b 596M in 64s
+[run ] A qwen3-0.6b/toolshed/core 60 items
+  [qwen3-0.6b] 20/60 items (pre...) 775s fwd_tok=5464 saved=94.1%
+  [qwen3-0.6b] 40/60 items (pre...) 1921s fwd_tok=14175 saved=94.9%
+  [qwen3-0.6b] 60/60 items (pre...) 2666s fwd_tok=23720 saved=94.8%
+[done] A qwen3-0.6b/toolshed/core: 700 scores in 2666s
+[schedule] complete

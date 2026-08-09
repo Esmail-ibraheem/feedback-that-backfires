@@ -1,0 +1,34 @@
+[load] qwen2.5-0.5b 494M in 31s
+[run ] A qwen2.5-0.5b/toolshed/core 120 items
+[load] qwen2.5-0.5b 494M in 62s
+[run ] A qwen2.5-0.5b/toolshed/core 100 items
+  [qwen2.5-0.5b] 20/100 items (pre...) 547s fwd_tok=5590 saved=95.4%
+  [qwen2.5-0.5b] 40/100 items (pre...) 1480s fwd_tok=14027 saved=95.4%
+  [qwen2.5-0.5b] 60/100 items (pre...) 2716s fwd_tok=22031 saved=95.5%
+  [qwen2.5-0.5b] 80/100 items (pre...) 4826s fwd_tok=30526 saved=95.4%
+[load] qwen2.5-0.5b 494M in 69s
+[run ] A qwen2.5-0.5b/toolshed/core 100 items
+  [qwen2.5-0.5b] 20/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [qwen2.5-0.5b] 40/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [qwen2.5-0.5b] 60/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [qwen2.5-0.5b] 80/100 items (pre...) 0s fwd_tok=0 saved=100.0%
+  [qwen2.5-0.5b] 100/100 items (pre...) 719s fwd_tok=3779 saved=93.6%
+[done] A qwen2.5-0.5b/toolshed/core: 91 scores in 719s
+[run ] B qwen2.5-0.5b/coderepair/core 60 items
+  [qwen2.5-0.5b] 20/60 items (pre...) 2054s fwd_tok=23515 saved=81.9%
+  [qwen2.5-0.5b] 40/60 items (pre...) 3512s fwd_tok=46821 saved=78.7%
+  [qwen2.5-0.5b] 60/60 items (pre...) 5036s fwd_tok=72693 saved=76.6%
+[done] B qwen2.5-0.5b/coderepair/core: 808 scores in 5036s
+[run ] C qwen2.5-0.5b/toolshed/extended 100 items
+  [qwen2.5-0.5b] 20/100 items (neut_pad...) 1112s fwd_tok=87369 saved=84.1%
+  [qwen2.5-0.5b] 40/100 items (neut_pad...) 1908s fwd_tok=104861 saved=86.8%
+  [qwen2.5-0.5b] 60/100 items (neut_pad...) 2342s fwd_tok=121599 saved=88.3%
+  [qwen2.5-0.5b] 80/100 items (neut_pad...) 2750s fwd_tok=138927 saved=89.2%
+  [qwen2.5-0.5b] 100/100 items (neut_pad...) 3194s fwd_tok=158721 saved=89.7%
+  [qwen2.5-0.5b] 20/100 items (fail_instr...) 3242s fwd_tok=160902 saved=89.8%
+  [qwen2.5-0.5b] 40/100 items (fail_instr...) 3295s fwd_tok=163469 saved=89.8%
+  [qwen2.5-0.5b] 60/100 items (fail_instr...) 3346s fwd_tok=165841 saved=89.8%
+  [qwen2.5-0.5b] 80/100 items (fail_instr...) 3398s fwd_tok=168362 saved=89.8%
+  [qwen2.5-0.5b] 100/100 items (fail_instr...) 3462s fwd_tok=171836 saved=89.8%
+[done] C qwen2.5-0.5b/toolshed/extended: 2000 scores in 3462s
+[schedule] complete

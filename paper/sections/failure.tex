@@ -1,0 +1,75 @@
+\section{Where the interventions fail}
+\label{sec:failure}
+
+A harness change that only ever helps would be suspicious. Three regimes where
+ours do not, or where the phenomenon itself weakens, are worth stating plainly.
+
+\paragraph{The ban displaces repetition into paraphrase.}
+Blocking a token sequence guarantees the model cannot emit that sequence; it
+does not make the model change its mind. In rollouts we observe the predicted
+consequence directly: a model whose exact repeat is blocked will sometimes
+produce a near-identical call with a reordered argument, different quoting, or a
+trivially altered value. This is why we report the canonical repeat rate, which
+counts those as repeats, alongside the exact rate. The gap between the two
+metrics is the honest measure of how much the ban actually accomplishes, and it
+is the reason we do not recommend the ban on its own.
+
+Figure~\ref{fig:qualitative-ban} shows a pair of trajectories from the same
+task and model under \emph{verbatim} and \emph{verbatim+ban}, and it is worth
+reading closely because it makes the mechanism visible in a way the aggregates
+cannot. Under the standard harness the model emits one wrong call and then
+repeats it, byte for byte, five times. Under the ban it cannot, and what it
+does instead is not to reconsider the call: it keeps the same call and starts
+appending fragments of the error message to it as an extra argument
+(\texttt{error='write\_file: SyntaxError: could not parse'}). The exact repeat
+rate for that rollout is zero, and nothing has been fixed. Whatever is
+producing this behaviour is copying from the transcript, and forbidding one
+particular string from the transcript redirects it to the nearest other string
+rather than turning it off.
+
+\input{tables/qualitative_ban}
+
+\paragraph{The abstraction can discard information the model needed.}
+The \emph{abstract} harness keeps the diagnosis and drops the call. For error families whose repair is fully determined by the diagnosis, such as
+an unknown tool or a missing required argument, that is lossless in the sense
+that matters. For
+families where the model needs to see \emph{what it wrote} in order to see what
+was wrong with it, the abstraction can remove the evidence along with the
+hazard. We expect this to bite hardest where the failure is about a specific
+value rather than a structural mistake, and Section~\ref{sec:analysis}'s
+per-error-family breakdown is where to look for it.
+
+\paragraph{The effect weakens with scale, and the interventions with it.}
+The inversion shrinks monotonically with model size within every family we
+tested. It follows that the value of these interventions is largest exactly
+where agents are cheapest to run and smallest where they are most capable. We do
+not know where, or whether, the gain crosses zero; our ladder stops at
+\LargestModel\ because that is what fits in memory in float32 on the hardware
+available and finishes in the time available, and we
+decline to extrapolate a crossing point from a fit whose zero lies outside the
+range we measured. A reader with GPUs should treat ``does this vanish at 8B?''
+as the first follow-up question, and we have made it cheap to answer: the probe
+needs a few hundred forward passes per model, not rollouts.
+
+\paragraph{The dominant failure at this scale is not repetition at all.}
+It is worth being clear about what the agent gets wrong most often, because it
+bounds how much any harness change can buy. Across rollouts, \ProseShare\ of actions are prose where a call was expected, for instance the
+model announcing that it has cancelled the meeting instead of calling
+\texttt{cancel\_event}. That is a
+capability limit of a 0.5B model, and no arrangement of the transcript fixes it.
+A further \TruncShare\ of actions are calls cut off by our \AgentTokenCap-token generation
+budget, which is our artefact rather than the model's; it applies identically in
+every condition and is small enough not to move the comparison, but it does
+depress absolute success on the templates with long arguments.
+
+The interventions we study act on repetition, and repetition is a substantial
+but not majority share of what goes wrong here. That is the honest ceiling on
+the effect sizes in Section~\ref{sec:agent}.
+
+\paragraph{A regime where the standard harness is fine.}
+When the failed action is one the model was unlikely to produce anyway, for
+instance a call it emitted only because of a formatting accident, the copying
+lift starts from a very low base and the absolute repeat probability stays
+small. The inversion is a statement about a ratio; it is most dangerous when the
+failed action was already plausible, which is precisely the case for the
+near-miss errors that dominate real agent transcripts.

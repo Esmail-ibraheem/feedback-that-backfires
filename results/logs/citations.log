@@ -1,0 +1,30 @@
+verifying 41 arXiv ids...
+resolved 41; unresolved: []
+  OK  2210.03629   yao2023react                 Yao 2022  ReAct: Synergizing Reasoning and Acting in Language Models
+  OK  2303.11366   shinn2023reflexion           Shinn 2023  Reflexion: Language Agents with Verbal Reinforcement Learning
+  OK  2303.17651   madaan2023selfrefine         Madaan 2023  Self-Refine: Iterative Refinement with Self-Feedback
+  OK  2310.01798   huang2024selfcorrect         Huang 2023  Large Language Models Cannot Self-Correct Reasoning Yet
+  OK  2304.05128   chen2024selfdebug            Chen 2023  Teaching Large Language Models to Self-Debug
+  OK  2310.08118   valmeekam2023critiquing      Valmeekam 2023  Can Large Language Models Really Improve by Self-critiquing Their Own 
+  OK  2309.10691   wang2024mint                 Wang 2023  MINT: Evaluating LLMs in Multi-turn Interaction with Tools and Languag
+  OK  2607.01641   hou2026infiniteloops         Hou 2026  When Agents Do Not Stop: Uncovering Infinite Agentic Loops in LLM Agen
+  OK  2605.20072   zenkri2026fidelity           Zenkri 2026  Probing Embodied LLMs: When Higher Observation Fidelity Hurts Problem 
+  OK  2605.30785   adacom2026context            Yi 2026  Learning Agent-Compatible Context Management for Long-Horizon Tasks
+  OK  2206.02369   xu2022breaktheloop           Xu 2022  Learning to Break the Loop: Analyzing and Mitigating Repetitions for N
+  OK  1904.09751   holtzman2020degeneration     Holtzman 2019  The Curious Case of Neural Text Degeneration
+  OK  1908.04319   welleck2020unlikelihood      Welleck 2019  Neural Text Generation with Unlikelihood Training
+  OK  1909.05858   keskar2019ctrl               Keskar 2019  CTRL: A Conditional Transformer Language Model for Controllable Genera
+  OK  2310.04625   mcdougall2024copysuppression McDougall 2023  Copy Suppression: Comprehensively Understanding an Attention Head
+  OK  2507.07810   repetitionneurons2025        Doan 2025  Understanding and Controlling Repetition Neurons and Induction Heads i
+  OK  2209.11895   olsson2022induction          Olsson 2022  In-context Learning and Induction Heads
+  OK  2402.07896   castricato2024pinkelephants  Castricato 2024  Suppressing Pink Elephants with Direct Principle Feedback
+  OK  2404.15154   nopinkelephant2024           Hwang 2024  Do not think about pink elephant!
+Traceback (most recent call last):
+  File "F:\paper\scripts\fetch_citations.py", line 184, in <module>
+    main()
+  File "F:\paper\scripts\fetch_citations.py", line 178, in main
+    print(f"  OK  {aid:12s} {CANDIDATES[aid]:28s} {first} {r['year']}  {r['title'][:70]}")
+  File "C:\Users\Esmail\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1256.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\xe1' in position 55: character maps to <undefined>

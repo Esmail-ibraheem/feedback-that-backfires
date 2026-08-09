@@ -1,0 +1,3 @@
+loaded {'hf_id': 'HuggingFaceTB/SmolLM2-135M-Instruct', 'n_params': 134515008, 'n_layers': 30, 'hidden': 576, 'vocab': 49152, 'dtype': 'float32', 'attn_implementation': 'sdpa', 'torch_threads': 1}
+checked 50 triples; max |cached - uncached| = 1.011e-04
+OK

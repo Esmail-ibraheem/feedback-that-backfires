@@ -1,0 +1,197 @@
+{
+  "model": "smollm2-135m",
+  "rows": [
+    {
+      "tag": "float32/full-head",
+      "threads": 4,
+      "length": 1,
+      "ms": 98.0004866917928,
+      "tok_per_s": 10.204030956957956,
+      "gflops": 2.7451906116148943
+    },
+    {
+      "tag": "float32/full-head",
+      "threads": 4,
+      "length": 32,
+      "ms": 308.040976524353,
+      "tok_per_s": 103.88228332820569,
+      "gflops": 27.94745234590371
+    },
+    {
+      "tag": "float32/full-head",
+      "threads": 4,
+      "length": 256,
+      "ms": 1619.5325056711833,
+      "tok_per_s": 158.07030677282137,
+      "gflops": 42.525657160217044
+    },
+    {
+      "tag": "float32/full-head",
+      "threads": 8,
+      "length": 1,
+      "ms": 85.50083637237549,
+      "tok_per_s": 11.695792022954883,
+      "gflops": 3.146519115068225
+    },
+    {
+      "tag": "float32/full-head",
+      "threads": 8,
+      "length": 32,
+      "ms": 282.33901659647626,
+      "tok_per_s": 113.33892278067593,
+      "gflops": 30.49157220910801
+    },
+    {
+      "tag": "float32/full-head",
+      "threads": 8,
+      "length": 256,
+      "ms": 1716.0274187723796,
+      "tok_per_s": 149.1817655123125,
+      "gflops": 40.13437276268568
+    },
+    {
+      "tag": "float32/last-head",
+      "threads": 4,
+      "length": 1,
+      "ms": 99.66611862182617,
+      "tok_per_s": 10.033499988039136,
+      "gflops": 2.6993126623181687
+    },
+    {
+      "tag": "float32/last-head",
+      "threads": 4,
+      "length": 32,
+      "ms": 240.8337195714315,
+      "tok_per_s": 132.87175922435054,
+      "gflops": 35.746491510075174
+    },
+    {
+      "tag": "float32/last-head",
+      "threads": 4,
+      "length": 256,
+      "ms": 1388.3333206176758,
+      "tok_per_s": 184.393759191852,
+      "gflops": 49.6074559856841
+    },
+    {
+      "tag": "float32/last-head",
+      "threads": 8,
+      "length": 1,
+      "ms": 92.99981594085693,
+      "tok_per_s": 10.752709453059007,
+      "gflops": 2.8928015961998157
+    },
+    {
+      "tag": "float32/last-head",
+      "threads": 8,
+      "length": 32,
+      "ms": 246.50037288665771,
+      "tok_per_s": 129.81724784129955,
+      "gflops": 34.92473626382078
+    },
+    {
+      "tag": "float32/last-head",
+      "threads": 8,
+      "length": 256,
+      "ms": 1401.3330936431885,
+      "tok_per_s": 182.6831901432162,
+      "gflops": 49.1472615671605
+    },
+    {
+      "tag": "bfloat16/full-head",
+      "threads": 4,
+      "length": 1,
+      "ms": 207.33014742533365,
+      "tok_per_s": 4.82322523963927,
+      "gflops": 1.2975923633917565
+    },
+    {
+      "tag": "bfloat16/full-head",
+      "threads": 4,
+      "length": 32,
+      "ms": 5044.649640719096,
+      "tok_per_s": 6.3433543018933065,
+      "gflops": 1.706552709332025
+    },
+    {
+      "tag": "bfloat16/full-head",
+      "threads": 4,
+      "length": 256,
+      "ms": 40701.30030314127,
+      "tok_per_s": 6.289725342761156,
+      "gflops": 1.6921249095986393
+    },
+    {
+      "tag": "bfloat16/full-head",
+      "threads": 8,
+      "length": 1,
+      "ms": 212.3334010442098,
+      "tok_per_s": 4.709574636313533,
+      "gflops": 1.267016939760624
+    },
+    {
+      "tag": "bfloat16/full-head",
+      "threads": 8,
+      "length": 32,
+      "ms": 4981.827100118001,
+      "tok_per_s": 6.42334616535408,
+      "gflops": 1.728072921638747
+    },
+    {
+      "tag": "bfloat16/full-head",
+      "threads": 8,
+      "length": 256,
+      "ms": 40686.76074345907,
+      "tok_per_s": 6.291972998640728,
+      "gflops": 1.692729596495883
+    },
+    {
+      "tag": "bfloat16/last-head",
+      "threads": 4,
+      "length": 1,
+      "ms": 214.16664123535156,
+      "tok_per_s": 4.6692612548425885,
+      "gflops": 1.2561714300984816
+    },
+    {
+      "tag": "bfloat16/last-head",
+      "threads": 4,
+      "length": 32,
+      "ms": 4085.2023363113403,
+      "tok_per_s": 7.833149343807979,
+      "gflops": 2.10735229329505
+    },
+    {
+      "tag": "bfloat16/last-head",
+      "threads": 4,
+      "length": 256,
+      "ms": 32469.286362330116,
+      "tok_per_s": 7.884374086429059,
+      "gflops": 2.121133286621995
+    },
+    {
+      "tag": "bfloat16/last-head",
+      "threads": 8,
+      "length": 1,
+      "ms": 204.4999599456787,
+      "tok_per_s": 4.8899765078957955,
+      "gflops": 1.31555045815883
+    },
+    {
+      "tag": "bfloat16/last-head",
+      "threads": 8,
+      "length": 32,
+      "ms": 3921.6830730438232,
+      "tok_per_s": 8.15976186855995,
+      "gflops": 2.1952208660548735
+    },
+    {
+      "tag": "bfloat16/last-head",
+      "threads": 8,
+      "length": 256,
+      "ms": 34376.340786616005,
+      "tok_per_s": 7.446982259952181,
+      "gflops": 2.0034617565466513
+    }
+  ]
+}

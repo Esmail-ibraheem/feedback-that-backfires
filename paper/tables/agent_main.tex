@@ -1,0 +1,23 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c}
+\toprule
+ & \multicolumn{3}{c}{Qwen2.5-0.5B} \\
+Harness & success & exact rep. & canon. rep. \\
+\midrule
+verbatim (standard) & 0.42\,\ci{0.21}{0.62} & 0.31\,\ci{0.15}{0.47} & 0.31\,\ci{0.15}{0.47} \\
+\quad + ``do not repeat'' & 0.58\,\ci{0.38}{0.79} & 0.24\,\ci{0.08}{0.42} & 0.24\,\ci{0.08}{0.42} \\
+abstract & 0.33\,\ci{0.17}{0.54} & 0.16\,\ci{0.04}{0.31} & 0.16\,\ci{0.04}{0.31} \\
+drop & 0.33\,\ci{0.17}{0.54} & 0.80\,\ci{0.79}{0.81} & 0.80\,\ci{0.79}{0.81} \\
+verbatim + ban & 0.42\,\ci{0.21}{0.62} & 0.08\,\ci{0.00}{0.15} & 0.08\,\ci{0.00}{0.15} \\
+abstract + ban & 0.33\,\ci{0.17}{0.54} & 0.07\,\ci{0.00}{0.14} & 0.07\,\ci{0.00}{0.14} \\
+\bottomrule
+\end{tabular}
+\caption{End-to-end rollouts on ToolShed. Success is the environment's goal predicate; \emph{exact rep.} is the fraction of failed actions that repeat an earlier failed action byte for byte, and \emph{canon. rep.} applies the same count after parsing and normalising the call, so paraphrases of a banned string are still counted. Brackets give 95\% cluster bootstrap intervals over tasks.}
+\label{tab:agent-main}
+\end{table*}

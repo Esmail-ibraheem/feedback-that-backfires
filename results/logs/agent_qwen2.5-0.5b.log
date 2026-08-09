@@ -1,0 +1,20 @@
+[env] toolshed: 24 tasks
+[load] qwen2.5-0.5b 494M
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 10/24 rollouts (713s)
+    qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: 20/24 rollouts (1409s)
+[done] qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: solved 8/24 in 1635s
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 10/24 rollouts (1257s)
+    qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: 20/24 rollouts (1874s)
+[done] qwen2.5-0.5b__toolshed__verbatim-instr__t0__s20260808: solved 11/24 in 2054s
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 10/24 rollouts (590s)
+    qwen2.5-0.5b__toolshed__drop__t0__s20260808: 20/24 rollouts (1190s)
+[done] qwen2.5-0.5b__toolshed__drop__t0__s20260808: solved 8/24 in 1358s
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 10/24 rollouts (366s)
+    qwen2.5-0.5b__toolshed__abstract__t0__s20260808: 20/24 rollouts (873s)
+[done] qwen2.5-0.5b__toolshed__abstract__t0__s20260808: solved 12/24 in 1152s
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 10/24 rollouts (407s)
+    qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: 20/24 rollouts (786s)
+[done] qwen2.5-0.5b__toolshed__verbatim-ban__t0__s20260808: solved 8/24 in 854s
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 10/24 rollouts (411s)
+    qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: 20/24 rollouts (858s)
+[done] qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: solved 12/24 in 1042s

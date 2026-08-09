@@ -1,0 +1,125 @@
+\section{Introduction}
+\label{sec:intro}
+
+An agent that calls tools will get some of those calls wrong. What happens next
+is decided not by the model but by the harness: it appends the failed call to
+the transcript, appends whatever the runtime printed, and asks the model to
+continue. ReAct \citep{yao2023react} introduced this pattern and essentially
+every agent framework since has kept it, including the ones built for
+small open-weight models. The reasoning is hard to argue with. The error message
+is real information, it was produced by ground truth rather than by a critic,
+and a model that reads it should not try the same thing again.
+
+We measured whether that is what happens. It is not.
+
+Take a decision point in an agent trajectory: a context $\ctxpre$, an action
+$\afail$ that will fail there, and the error the runtime returns. Compare the
+model's probability of writing $\afail$ before the attempt with its probability
+after the failure has been recorded. For every one of the
+\NumModelsToolshed\ instruction-tuned models we tested, spanning
+\SmallestModel--\LargestModel\ parameters across \NumFamilies\ families, that
+probability goes \emph{up}, by \MeanG\ nats, or about \GPerTokenTool\ nats per
+token of the action, which is a factor of \OddsPerToken\ in the odds of every
+token. The effect is not an average over a few dramatic cases: it holds on
+\FracNegTool\ or more of individual items.
+
+Restated on a scale that is easier to hold onto: over a fixed set of four
+candidate actions, the probability of re-emitting the failed call rises from
+\PRepeatPreMean\ before the attempt to \PRepeatPostMean\ after it. Greedy
+decoding, which is what the agent would actually have written next, reproduces
+the failed call token for token on \GreedyPostMean\ of items after the failure,
+against \GreedyPreMean\ before it.
+
+Practitioners know the symptom. Agents get stuck repeating a call that has
+already failed, and frameworks ship loop detectors and step caps to contain it.
+The symptom is usually attributed to the model: it is small, it does not really
+understand the error, a stronger model would recover. Our second result is that
+this diagnosis is wrong, and it matters because it points at the wrong fix.
+
+Appending $(\afail, o^{\times})$ does two things at once, and they can be
+separated. It puts the token sequence of the failed call into the context, where
+the model's copying machinery can reach it
+\citep{olsson2022induction,xu2022breaktheloop}; and it asserts that the call
+failed. We can measure each part on its own by scoring the same action under a
+context whose observation is \emph{valence-free}, meaning the runtime
+acknowledges the call and says nothing about how it went. The surface-form term
+accounts for \CopyShare\ of the effect. The semantic term, the part that would
+have to be large and negative for ``the model does not understand the error'' to
+be the explanation, is small, and its sign is not even consistent between our
+two environments. On tool calls it is slightly positive, since explaining what
+went wrong requires naming the tool and the argument again; on program repair it
+is slightly negative, so a traceback does push the model away from the code that
+produced it. We stress the second case, because it is the one that fixes the
+interpretation: these models are not simply failing to read error messages.
+Whatever reading happens is being outvoted, by a median of \MedianCopySemRatio\
+to one across model and environment, and by \MaxCopySemRatio\ to one at the
+extreme.
+
+This changes what a fix should look like. If the model misunderstood, the remedy
+is a better model or a clearer message. If the harm is carried by the presence of
+a string, then message engineering cannot reach it, and neither can an
+instruction: telling a model not to repeat a call requires it to represent a
+negation about a string that is sitting right there in its context, which is the
+condition under which negative instructions are known to work least well
+\citep{castricato2024pinkelephants,negation2025pinkelephant}. What should work
+instead is structural.
+
+``Structural'' turns out to be narrower than it first appears, and the
+experiment that shows this is the one we did not expect. The obvious structural
+fix is to delete the failed attempt and retry from a clean context, which is what
+prior work on context contamination recommends \citep{yang2026contamination}.
+That is the \emph{worst} harness we tested, multiplying the exact repeat rate by
+\DropRepeatRatio\ without changing task success. The reason is embarrassingly
+simple once seen: deleting
+the failure restores the exact context that produced it, and a deterministic
+policy in an identical context emits an identical action. The requirement is
+therefore not ``remove the failed action'' but something more specific: the
+context after a failure must differ from the context before it, and the
+difference must not be the failed action.
+
+We test all three. Replacing the verbatim call with a description the runtime
+generates from its own error metadata, which keeps the diagnosis and drops the
+token sequence,
+removes \AbstractRemoved\ of the inversion and drives the exact greedy repeat
+rate to zero, at no cost in generated tokens. A decoder-level ban on
+previously-failed strings acts on the same term and costs nothing at all. The
+natural-language prohibition moves the measured quantity slightly the
+\emph{wrong} way, which is what the negative-instruction literature would
+predict for a prohibition that has to name the very string it is prohibiting
+\citep{castricato2024pinkelephants,negation2025pinkelephant}, and in
+free-running rollouts it does not reduce repetition either, though it does
+change behaviour in another way we report rather than explain.
+Section~\ref{sec:agent} gives all of this in full, including where the
+interventions do not help.
+
+We are not claiming that execution feedback is useless, or that agent
+transcripts should be thrown away. The failed call carries diagnostic
+information a harness genuinely needs. The claim is narrower and, we think, more
+useful: the standard way of \emph{delivering} that information hands the model a
+strong reason to repeat itself, and a harness can keep the diagnosis while
+withholding the reason.
+
+\paragraph{Contributions.}
+\begin{enumerate}\itemsep2pt
+\item \textbf{A measurement.} We define the \emph{corrective gain} of a failure
+record, the change in log-probability of re-emitting the failed action, and
+show it is negative across \NumModelsToolshed\ models,
+\NumFamilies\ families and two environments (simulated tool calling and MBPP
+program repair with real interpreter output). We report it alongside two
+interpretable readouts, a normalised repeat probability and an exact greedy
+repeat rate.
+\item \textbf{A decomposition that identifies the cause.} Counterfactual
+observations split the gain into a surface-form term and a semantic term. The
+surface-form term dominates at every scale we tested, and it, not the semantic
+term, is what improves with model size.
+\item \textbf{Interventions that follow from the decomposition, and one that
+does not.} Replacing the verbatim failed call with a runtime-generated
+description of the failure, and banning previously-failed strings at the
+decoder, both act on the term that matters; adding a natural-language
+prohibition does not. We evaluate all three in free-running rollouts and report
+their cost.
+\item \textbf{A reproducible, CPU-only artefact.} Every number comes from code
+in the accompanying repository, which runs end to end without a GPU. Raw
+per-score records, item sets, seeds and environment metadata are included, and
+the manuscript's inline numbers are generated from them rather than typed.
+\end{enumerate}

@@ -1,0 +1,21 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l r c c c c c c}
+\toprule
+Model & Params & $p_{\text{rep}}$ before & $p_{\text{rep}}$ after & $\Delta p_{\text{rep}}$ & greedy before & greedy after & greedy abs. \\
+\midrule
+SmolLM2-135M & 0.14B & \textbf{0.142\,\ci{0.086}{0.201}} & \textbf{0.875\,\ci{0.840}{0.910}} & \textbf{0.733\,\ci{0.677}{0.789}} & 0.000\,\ci{0.000}{0.000} & \textbf{0.430\,\ci{0.340}{0.519}} & 0.000\,\ci{0.000}{0.000} \\
+SmolLM2-360M & 0.36B & \textbf{0.117\,\ci{0.067}{0.170}} & \textbf{0.753\,\ci{0.684}{0.820}} & \textbf{0.637\,\ci{0.568}{0.708}} & 0.000\,\ci{0.000}{0.000} & \textbf{0.410\,\ci{0.306}{0.521}} & 0.020\,\ci{0.000}{0.050} \\
+Qwen2.5-0.5B & 0.49B & \textbf{0.013\,\ci{0.004}{0.028}} & \textbf{0.602\,\ci{0.528}{0.681}} & \textbf{0.589\,\ci{0.516}{0.666}} & 0.000\,\ci{0.000}{0.000} & 0.030\,\ci{0.000}{0.067} & 0.000\,\ci{0.000}{0.000} \\
+Qwen3-0.6B & 0.60B & \textbf{0.006\,\ci{0.000}{0.014}} & \textbf{0.296\,\ci{0.196}{0.399}} & \textbf{0.290\,\ci{0.193}{0.393}} & 0.000\,\ci{0.000}{0.000} & 0.000\,\ci{0.000}{0.000} & 0.000\,\ci{0.000}{0.000} \\
+Llama-3.2-1B & 1.24B & \textbf{0.009\,\ci{0.000}{0.025}} & \textbf{0.246\,\ci{0.136}{0.363}} & \textbf{0.237\,\ci{0.131}{0.348}} & 0.000\,\ci{0.000}{0.000} & 0.000\,\ci{0.000}{0.000} & 0.000\,\ci{0.000}{0.000} \\
+\bottomrule
+\end{tabular}
+\caption{Repetition probabilities on toolshed. $p_{\text{rep}}$ is the normalised probability of the failed call among the scored candidate actions; \emph{greedy} is the fraction of items on which greedy decoding reproduces the failed call exactly.}
+\label{tab:probe-repeat-toolshed}
+\end{table*}

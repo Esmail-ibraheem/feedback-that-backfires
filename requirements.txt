@@ -1,0 +1,23 @@
+# Core numerics / modeling stack.
+# Everything here runs CPU-only; no CUDA build is required to reproduce any
+# experiment in this repository (see README for the hardware we actually used).
+torch==2.8.0
+transformers==4.56.1
+tokenizers>=0.22,<0.23
+accelerate==1.10.1
+datasets==4.0.0
+safetensors>=0.4.5
+huggingface-hub>=0.34,<1.0
+sentencepiece>=0.2.0
+
+# Analysis / statistics / plotting.
+numpy>=1.26,<3
+pandas>=2.1
+scipy>=1.14
+scikit-learn>=1.5
+statsmodels>=0.14
+matplotlib>=3.9
+
+# Utilities.
+pyyaml>=6.0
+tqdm>=4.66

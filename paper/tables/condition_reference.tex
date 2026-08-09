@@ -1,0 +1,27 @@
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{l p{0.62\linewidth}}
+\toprule
+Condition & What the transcript contains \\
+\midrule
+\texttt{pre} & context before the attempt (baseline) \\
+\texttt{fail} & attempt + error observation (standard ReAct harness) \\
+\texttt{succ} & attempt + counterfactual success observation \\
+\texttt{neut} & attempt + valence-free observation \\
+\texttt{neut\_pad} & attempt + valence-free observation, length-matched to `fail` \\
+\texttt{abstract} & harness-generated failure description, no verbatim call \\
+\texttt{fail\_echo} & as `fail`, but the error quotes the failed call verbatim \\
+\texttt{fail\_terse} & as `fail`, with the shortest error rendering \\
+\texttt{fail\_verbose} & as `fail`, with the longest error rendering \\
+\texttt{fail\_instr} & as `fail`, plus an explicit do-not-repeat instruction \\
+\texttt{fail\_k2} & the same call fails twice \\
+\texttt{fail\_k3} & the same call fails three times \\
+\texttt{fail\_early} & as `fail`, but the failure precedes the successful steps \\
+\texttt{fail\_other} & a DIFFERENT wrong action failed; the scored one was never written \\
+\texttt{abstract\_min} & bare failure marker, no diagnosis and no verbatim call \\
+\bottomrule
+\end{tabular}
+\caption{Every probe condition. All conditions for one item share the same system prompt, goal and successful prefix, byte for byte.}
+\label{tab:conditions}
+\end{table}

@@ -1,0 +1,8 @@
+threads 8 deterministic False
+4 items in 39.5s -> 9.9s/item
+  render       0.0s  ( 0.0%)
+  pad          0.0s  ( 0.1%)
+  seek        14.9s  (37.7%)
+  score       24.6s  (62.2%)
+  forward_tokens=3128 calls=72 naive=36048 saved=91.3%
+  effective 79.2 pushed tok/s

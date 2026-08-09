@@ -1,0 +1,19 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l r c c c c c c}
+\toprule
+Model & Params & $p_{\text{rep}}$ before & $p_{\text{rep}}$ after & $\Delta p_{\text{rep}}$ & greedy before & greedy after & greedy abs. \\
+\midrule
+SmolLM2-135M & 0.14B & \textbf{0.111\,\ci{0.053}{0.180}} & \textbf{0.951\,\ci{0.917}{0.978}} & \textbf{0.840\,\ci{0.770}{0.901}} & 0.000\,\ci{0.000}{0.000} & 0.000\,\ci{0.000}{0.000} & 0.000\,\ci{0.000}{0.000} \\
+SmolLM2-360M & 0.36B & \textbf{0.089\,\ci{0.032}{0.156}} & \textbf{0.856\,\ci{0.795}{0.910}} & \textbf{0.767\,\ci{0.689}{0.840}} & 0.000\,\ci{0.000}{0.000} & \textbf{0.100\,\ci{0.033}{0.183}} & 0.000\,\ci{0.000}{0.000} \\
+Qwen2.5-0.5B & 0.49B & \textbf{0.075\,\ci{0.023}{0.138}} & \textbf{0.833\,\ci{0.766}{0.893}} & \textbf{0.758\,\ci{0.680}{0.831}} & 0.000\,\ci{0.000}{0.000} & 0.017\,\ci{0.000}{0.050} & 0.000\,\ci{0.000}{0.000} \\
+\bottomrule
+\end{tabular}
+\caption{Repetition probabilities on coderepair. $p_{\text{rep}}$ is the normalised probability of the failed call among the scored candidate actions; \emph{greedy} is the fraction of items on which greedy decoding reproduces the failed call exactly.}
+\label{tab:probe-repeat-coderepair}
+\end{table*}

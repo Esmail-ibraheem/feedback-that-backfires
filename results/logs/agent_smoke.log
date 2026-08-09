@@ -1,0 +1,4 @@
+[env] toolshed: 6 tasks
+[load] qwen2.5-0.5b 494M
+[done] qwen2.5-0.5b__toolshed__verbatim__t0__s20260808: solved 3/6 in 322s
+[done] qwen2.5-0.5b__toolshed__abstract-ban__t0__s20260808: solved 3/6 in 311s

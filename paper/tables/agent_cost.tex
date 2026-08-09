@@ -1,0 +1,22 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{l r r r r}
+\toprule
+ & \multicolumn{4}{c}{Qwen2.5-0.5B} \\
+Harness & gen & prompt & ctx/step & steps \\
+\midrule
+verbatim (standard) & 67 & 2764 & 633 & 4 \\
+\quad + ``do not repeat'' & 47 & 2210 & 646 & 3 \\
+abstract & 64 & 2602 & 616 & 4 \\
+drop & 69 & 2587 & 586 & 4 \\
+verbatim + ban & 69 & 2764 & 633 & 4 \\
+abstract + ban & 66 & 2602 & 616 & 4 \\
+\bottomrule
+\end{tabular}
+\caption{Cost per rollout. \emph{gen} and \emph{prompt} are tokens summed over a rollout's steps, so a harness that takes more steps accumulates more of both; \emph{ctx/step} divides the prompt total by the number of steps and is the fair comparison of context size. The decoder ban adds no tokens at all. The abstraction produces a slightly shorter context per step while taking more steps, because it does not terminate early on a loop. Wall-clock is omitted: these runs shared a CPU with other jobs, so it measures scheduling rather than the harness.}
+\label{tab:cost}
+\end{table}

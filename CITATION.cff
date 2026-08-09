@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software or its findings, please cite the paper."
+title: "Feedback That Backfires: Why Small Language Model Agents Repeat the Call They Just Watched Fail"
+authors:
+  - family-names: Gumaan
+    given-names: Esmail
+repository-code: "https://github.com/Esmail-ibraheem/feedback-that-backfires"
+url: "https://github.com/Esmail-ibraheem/feedback-that-backfires"
+abstract: >-
+  Agent harnesses record a failed tool call and its error message in the
+  transcript on the assumption that the error is corrective. We measure the
+  corrective gain of a failure record and find it negative across five
+  instruction-tuned models (135M-1.2B, four families) in two environments.
+  Counterfactual observations show the damage is carried by the failed call's
+  surface form rather than by the model misreading the error, which localises
+  the problem in the harness and predicts which remedies work.
+keywords:
+  - language model agents
+  - small language models
+  - tool use
+  - agent harness
+  - execution feedback
+  - constrained decoding
+license: MIT
+date-released: "2026-08-09"

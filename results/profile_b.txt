@@ -1,0 +1,6 @@
+build node (761 tok): 4.90s
+cand tokens 44
+score call: 605 ms for 44 tokens
+  forward+crop: 547 ms
+  crop+1tok fwd: 189 ms
+  fresh 200-tok prefill: 1213 ms

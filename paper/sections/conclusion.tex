@@ -1,0 +1,36 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+Agent harnesses append a failed call and its error message to the transcript
+because the error is information. It is. But the transcript entry that carries
+it also carries the failed call's exact token sequence, and for small models
+that second, unintended payload is much the larger of the two. Measured as a
+change in the log-probability of writing the failed call again, the net effect
+of the failure record is to make repetition \emph{more} likely, on every model
+we tested, in both environments.
+
+The decomposition is what makes this actionable rather than merely
+discouraging. The harm is carried by the surface form, not by a failure to read
+the message, so it is a property of the harness and not of the model, and harnesses are much
+cheaper to change than models. Keeping the diagnosis while
+withholding the string, or making the string unreachable at decoding time, acts
+on the term that matters. Instructing the model not to repeat itself does not.
+
+Neither does the remedy that sounds most obviously right. Deleting the failed
+attempt and retrying from a clean context is the worst harness we measured,
+because it restores precisely the context that produced the failure. The
+principle that survives all three comparisons is narrow enough to be useful: the
+context after a failure must differ from the context before it, and the
+difference must not be the failed action.
+
+Three questions follow directly. Does the inversion persist at frontier scale,
+and if it disappears, does it do so because copying weakens or because the error
+message finally wins? Our decomposition answers that question with a few hundred
+forward passes per model, so it is cheap for anyone with the hardware. Second,
+how should a harness decide \emph{what} to abstract? We used a fixed mapping from
+error family to gloss; a runtime that knows more about its own failures could
+say more, and there is a real trade-off between removing the hazard and removing
+the evidence. Third, can the effect be trained away rather than engineered around, in the way
+unlikelihood training and repetition penalties address open-ended text? Our results suggest what such a
+training signal would have to target, and it is not the model's understanding of
+error messages.

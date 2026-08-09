@@ -1,0 +1,19 @@
+Starting from v4.46, the `logits` model output will have the same type as the model (except at train time, where it will always be FP32)
+{
+  "model": "smollm2-135m",
+  "env": "toolshed",
+  "n_compared": 210,
+  "max_abs_diff": 4.863739013671875e-05,
+  "mean_abs_diff": 8.907319889182136e-06,
+  "tolerance": 0.001,
+  "passed": true,
+  "environment_now": {
+    "python": "3.12.4",
+    "torch": "2.4.0+cpu",
+    "transformers": "4.45.0",
+    "platform": "Windows-10-10.0.19042-SP0",
+    "cpu": "Intel(R) Core(TM) i7-6820HQ CPU @ 2.70GHz",
+    "threads": 1
+  }
+}
+OK

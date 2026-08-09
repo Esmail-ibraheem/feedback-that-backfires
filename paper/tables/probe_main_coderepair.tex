@@ -1,0 +1,19 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l r c c c c c}
+\toprule
+Model & Params & $G$ & $G$/token & copy & sem & $G_{\text{abs}}$ \\
+\midrule
+SmolLM2-135M & 0.14B & \textbf{\textminus 82.61\,\ci{\textminus 93.89}{\textminus 71.79}} & \textbf{\textminus 1.23\,\ci{\textminus 1.32}{\textminus 1.14}} & \textbf{84.00\,\ci{73.16}{95.33}} & \textbf{\textminus 1.39\,\ci{\textminus 1.88}{\textminus 0.91}} & \textbf{1.56\,\ci{0.93}{2.23}} \\
+SmolLM2-360M & 0.36B & \textbf{\textminus 70.35\,\ci{\textminus 79.40}{\textminus 61.71}} & \textbf{\textminus 1.09\,\ci{\textminus 1.19}{\textminus 1.00}} & \textbf{71.02\,\ci{62.08}{80.28}} & \textbf{\textminus 0.67\,\ci{\textminus 1.16}{\textminus 0.19}} & \textbf{\textminus 0.80\,\ci{\textminus 1.23}{\textminus 0.40}} \\
+Qwen2.5-0.5B & 0.49B & \textbf{\textminus 67.68\,\ci{\textminus 76.71}{\textminus 59.15}} & \textbf{\textminus 1.21\,\ci{\textminus 1.36}{\textminus 1.08}} & \textbf{69.50\,\ci{61.01}{78.50}} & \textbf{\textminus 1.82\,\ci{\textminus 2.48}{\textminus 1.19}} & \textbf{\textminus 0.51\,\ci{\textminus 0.95}{\textminus 0.08}} \\
+\bottomrule
+\end{tabular}
+\caption{Probe results on CodeRepair (MBPP program repair). All quantities are in nats and are differences in the summed log-probability of the \emph{same} action string under two contexts. $G>0$ means the harness's failure record made the failed call less likely; $G<0$ is feedback inversion. Cells give the mean over items with a 95\% cluster bootstrap interval (clustered on task); bold marks intervals excluding zero.}
+\label{tab:probe-main-coderepair}
+\end{table*}

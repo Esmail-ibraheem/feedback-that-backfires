@@ -1,0 +1,21 @@
+% Requires in the preamble:
+% \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l r c c c c c}
+\toprule
+Model & Params & frac. $G<0$ & $\Delta$margin & repair & copy$^{\checkmark}$ & polarity \\
+\midrule
+SmolLM2-135M & 0.14B & \textbf{1.00\,\ci{1.00}{1.00}} & \textbf{\textminus 12.58\,\ci{\textminus 14.34}{\textminus 10.90}} & \textbf{11.34\,\ci{10.21}{12.40}} & \textbf{24.46\,\ci{22.57}{26.51}} & \textbf{\textminus 0.54\,\ci{\textminus 0.93}{\textminus 0.15}} \\
+SmolLM2-360M & 0.36B & \textbf{1.00\,\ci{1.00}{1.00}} & \textbf{\textminus 12.23\,\ci{\textminus 14.11}{\textminus 10.51}} & \textbf{6.39\,\ci{4.86}{8.02}} & \textbf{17.80\,\ci{15.59}{20.22}} & \textbf{0.82\,\ci{0.20}{1.49}} \\
+Qwen2.5-0.5B & 0.49B & \textbf{0.90\,\ci{0.84}{0.95}} & \textbf{\textminus 15.16\,\ci{\textminus 17.71}{\textminus 12.79}} & \textminus 1.25\,\ci{\textminus 2.46}{0.03} & \textbf{11.01\,\ci{8.77}{13.37}} & \textbf{2.90\,\ci{1.73}{4.08}} \\
+Qwen3-0.6B & 0.60B & \textbf{0.94\,\ci{0.88}{0.99}} & \textbf{\textminus 17.54\,\ci{\textminus 20.69}{\textminus 14.61}} & \textbf{3.96\,\ci{2.25}{5.75}} & \textbf{21.03\,\ci{17.85}{24.38}} & 0.47\,\ci{\textminus 0.41}{1.28} \\
+Llama-3.2-1B & 1.24B & \textbf{1.00\,\ci{1.00}{1.00}} & \textbf{\textminus 9.60\,\ci{\textminus 12.31}{\textminus 7.36}} & \textbf{3.08\,\ci{1.20}{4.96}} & \textbf{12.51\,\ci{9.39}{15.93}} & 0.17\,\ci{\textminus 1.07}{1.30} \\
+\bottomrule
+\end{tabular}
+\caption{Robustness and secondary quantities. \emph{frac.\ $G<0$} is the assumption-light item-level sign statistic; $\Delta$margin is the change in the gold-minus-failed log-probability gap; \emph{repair} is the change in the correct action's log-probability. copy$^{\checkmark}$ repeats the surface-form term against the counterfactual \emph{success} observation instead of the valence-free one, in case the latter reads as mildly positive; the matching semantic term referenced the same way is algebraically the polarity contrast, so it appears once, in the last column.}
+\label{tab:probe-robustness}
+\end{table*}

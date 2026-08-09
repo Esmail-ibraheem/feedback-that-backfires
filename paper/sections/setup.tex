@@ -1,0 +1,81 @@
+\section{Experimental setup}
+\label{sec:setup}
+
+\subsection{Environments}
+
+We use two environments chosen to sit at opposite ends of a control/realism
+trade-off. Both execute actions for real; no language model judges any outcome
+anywhere in this paper.
+
+\paragraph{ToolShed (tool calling).}
+A simulated office workspace with twelve typed tools (files, contacts, calendar,
+messaging, unit conversion) and six task templates requiring two to four calls.
+Actions are Python-style calls such as
+\texttt{find\_contact(name='Dana Bergmann')}, parsed with Python's \texttt{ast}
+module; argument binding, type checking and entity lookup are performed by the
+runtime, which returns an error message at one of three verbosity levels.
+Failing actions are produced from the reference action by
+\NumToolshedOperators\ perturbation operators, yielding
+\NumToolshedErrorTypes\ distinct error families. We verified that every
+operator/error pairing produces the intended family.
+
+We built this environment rather than reusing a public agent benchmark for one
+reason: the decomposition in Eq.~\eqref{eq:decomp} requires, for one fixed
+action, an observation reporting failure, one reporting success, and one
+reporting nothing. The standard agent benchmarks (BFCL
+\citep{patil2024gorilla}, SWE-bench \citep{jimenez2024swebench}, AgentBench
+\citep{liu2024agentbench}, WebArena \citep{zhou2024webarena}, GAIA
+\citep{mialon2024gaia}, $\tau$-bench \citep{yao2024taubench}, AppWorld \citep{trivedi2024appworld}) are built to score policies, not to expose
+counterfactual observations, and hand-writing those on top of one is precisely
+where an experimenter's expectations would leak into the data. Here all three
+come from the same renderer. Most of those benchmarks are also out of reach on a
+CPU, which is a second reason but not the deciding one.
+
+\paragraph{CodeRepair (program repair).}
+The sanitized split of MBPP \citep{austin2021mbpp}. An action is a Python
+function; the runtime executes it against the problem's own assertions in a
+subprocess and returns the interpreter's output. Failing programs are
+single-edit mutations of the reference solution (flip a comparison, shift an
+index, drop a \texttt{return}, rename one occurrence of a variable, drop a
+negation, and others); a mutant is kept only if the reference passes its tests
+and the mutant fails them. Nothing about the error text is authored by us. This
+environment also exercises a regime ToolShed cannot: actions are whole functions
+rather than one-line calls, and a real traceback \emph{quotes the offending source line back at the model}, a surface-form
+echo that appears in agent transcripts without anyone deciding to put it there.
+
+\input{tables/env_stats}
+
+\subsection{Models}
+
+\NumModels\ instruction-tuned checkpoints spanning \SmallestModel--\LargestModel\
+parameters across \NumFamilies\ families (\FamilyList)
+\citep{allal2025smollm2,qwen2024qwen25,qwen2025qwen3,grattafiori2024llama3}.
+Within-family pairs are included deliberately so that a size trend is
+identifiable separately from family effects. All models run in float32 on CPU;
+the environment is described in Section~\ref{sec:efficiency}.
+
+\subsection{Protocol}
+
+Probe scoring is teacher-forced and deterministic. For each item we score the
+failing action and the reference action under every condition, plus two
+distractor actions under the before/after pair. Items are drawn by a
+deterministic stratified subsample that balances perturbation operators and
+caps items per task, since the number of independent tasks, not the number of items, is what the
+confidence intervals depend on.
+
+\paragraph{Statistics.}
+Probe items from the same task share a goal, a system prompt and a prefix, so
+they are not independent. Every interval we report is a cluster bootstrap
+($10{,}000$ resamples) that resamples \emph{tasks} with replacement and carries
+all of a task's items along with it. We report the mean difference, its 95\%
+interval, Cohen's $d_z$ for the paired differences, and a bootstrap $p$-value
+against zero; the family of headline $G$ tests is Holm-corrected across models.
+Bold cells in the tables mark intervals excluding zero.
+
+\paragraph{Reproducibility.}
+All randomness derives from a single base seed (20260808) through named
+sub-streams, so re-running any part of the study reproduces the same items even
+if the surrounding loop changed. Raw per-score records, the exact item ids used
+by each run and model metadata are written alongside every result file, as is
+the software environment for every run made after we started recording it
+(Appendix~\ref{app:repro}).
