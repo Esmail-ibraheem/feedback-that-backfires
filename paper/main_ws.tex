@@ -1,0 +1,103 @@
+% NeurIPS 2026 SLM-Agents workshop submission.
+%
+%   tectonic -X compile main_ws.tex
+%
+% Long-paper track: up to SIX content pages. References, the appendix and the
+% NeurIPS checklist do not count toward that, so the body is a condensed
+% rewrite (sections_ws/body.tex) rather than the full manuscript, while the
+% appendix reuses the full paper's appendix material unchanged. Every number is
+% still a macro from tables/facts.tex, so the two versions cannot disagree.
+%
+% NOTE ON THE STYLE FILE. The official NeurIPS *2026* style was not published at
+% any public URL when this was built, so this uses neurips_2025.sty. Before
+% submitting, drop neurips_2026.sty into neurips/ and change the two lines
+% marked STYLE below. The submission form requires the 2026 style and forbids
+% changes to margins, font sizes, spacing and page dimensions; nothing here
+% alters any of those.
+%
+% Anonymity: `\usepackage{neurips_2025}` with no options is the anonymous
+% submission form. Do NOT add [final] or [preprint] for a submission.
+\documentclass{article}
+
+% `dblblindworkshop` is the style's own double-blind workshop mode: it keeps the
+% anonymous byline and prints the workshop notice at the foot of page 1.
+\usepackage[dblblindworkshop]{neurips/neurips_2025}   % STYLE: -> neurips_2026
+\workshoptitle{SLM-Agents: 1st NeurIPS Workshop on SLMs for Agentic Systems}
+
+% The 2025 style hardcodes its own year in the footer notice. Overriding the
+% two strings touches no margin, font size, spacing or page dimension, so it
+% stays inside the "no modifications" rule; with the 2026 style file these
+% become no-ops and can be deleted.
+\makeatletter
+\renewcommand{\@neuripsordinal}{40th}
+\renewcommand{\@neuripsyear}{2026}
+\makeatother
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+
+\newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
+\newcommand{\afail}{a^{\times}}
+\newcommand{\agold}{a^{\checkmark}}
+\newcommand{\Gain}{G}
+\newcommand{\copyterm}{\Delta_{\mathrm{copy}}}
+\newcommand{\semterm}{\Delta_{\mathrm{sem}}}
+\newcommand{\ctxpre}{C}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[#1]}}}
+
+% NeurIPS text block is 5.5in, narrower than either other build, so the wide
+% generated tables step down again.
+\newcommand{\tblfont}{\tiny}
+\newlength{\tblsep}\setlength{\tblsep}{2pt}
+\newcommand{\tblfontsmall}{\tiny}
+\newlength{\tblsepsmall}\setlength{\tblsepsmall}{1.5pt}
+
+\input{tables/facts}
+
+% No manual break: a forced `\\` strands two words on their own line here.
+\title{Feedback That Backfires: Why Small Language Model Agents Repeat
+the Call They Just Watched Fail}
+
+% Ignored while anonymous; kept so the camera-ready needs no edit here.
+\author{%
+  Esmail Gumaan \\
+  \texttt{mokevara.strawhat@gmail.com} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract_body}
+\end{abstract}
+
+\input{sections_ws/body}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\input{sections_ws/appendix}
+
+\input{neurips/checklist}
+
+\end{document}

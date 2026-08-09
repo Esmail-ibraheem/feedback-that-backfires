@@ -1,0 +1,276 @@
+\section{Introduction}
+\label{sec:ws-intro}
+
+An agent that calls tools will get some of those calls wrong. What happens next
+is decided by the harness rather than the model: it appends the failed call to
+the transcript, appends whatever the runtime printed, and asks the model to
+continue. ReAct \citep{yao2023react} introduced this pattern and essentially
+every agent framework since has kept it, including those built for small
+open-weight models. The premise is that the error message is corrective
+information, produced by ground truth rather than by a critic.
+
+We measure whether it is, and it is not. Fix a decision point: a context
+$\ctxpre$, an action $\afail$ that fails there, and the observation
+$o^{\times}$ the runtime returns. Define the \emph{corrective gain} as the
+change in the log-probability of writing $\afail$ again once the failure has
+been recorded. Across \NumModelsToolshed\ instruction-tuned checkpoints
+(\SmallestModel--\LargestModel, \NumFamilies\ families) and two environments,
+the gain is \emph{negative}: recording the failure makes the failed call
+\emph{more} likely, by \MeanG\ nats, or about \GPerTokenTool\ nats per action
+token. The effect is not an average over a few dramatic items; it holds on
+\FracNegTool\ or more of individual items.
+
+The reason matters more than the size, because it decides which fixes can
+work. Appending $(\afail, o^{\times})$ does two things at once: it places the
+failed call's token sequence where the model's copying machinery can reach it
+\citep{olsson2022induction,xu2022breaktheloop}, and it asserts that the call
+failed. Scoring the same action against a \emph{valence-free} observation, one
+that acknowledges the call without saying how it went, separates them. The
+surface-form term accounts for \CopyShare\ of the effect. The semantic term,
+which would have to be large and negative for ``the model does not understand
+the error'' to be the explanation, is small and its sign is not even consistent
+across our two environments.
+
+That localises the problem in the harness rather than in the model, and it
+predicts which remedies act on the right term. Two do. Replacing the verbatim
+call with a description the runtime generates from its own error metadata
+removes \AbstractRemoved\ of the inversion at no token cost, and banning
+previously-failed strings at the decoder acts on the same term. Two do not. A
+natural-language prohibition moves the measured quantity slightly the
+\emph{wrong} way, as the negative-instruction literature would predict for a
+prohibition that must name the string it forbids
+\citep{castricato2024pinkelephants,negation2025pinkelephant}. More
+surprisingly, deleting the failed attempt and retrying from a clean context,
+which is what prior work on context contamination recommends
+\citep{yang2026contamination}, is the \emph{worst} harness we measure: it
+multiplies the exact repeat rate by \DropRepeatRatio\ without improving task
+success. Deleting the failure restores the exact context that produced it, and
+a deterministic policy in an identical context emits an identical action.
+
+What survives is narrow enough to be useful:
+
+\begin{quote}
+The context after a failure must differ from the context before it, and the
+difference must not be the failed action itself.
+\end{quote}
+
+\paragraph{Contributions.}
+(i) A measurement, the corrective gain of a failure record, shown negative
+across \NumModelsToolshed\ models and two environments, reported alongside a
+normalised repeat probability and an exact greedy repeat rate.
+(ii) A decomposition into a surface-form and a semantic term, which identifies
+the surface form as the cause and predicts which interventions can work.
+(iii) An evaluation of three harness interventions in free-running rollouts,
+including one that follows from prior work and makes matters worse. Everything
+runs on a CPU; code, item sets and raw per-score records are released.
+
+\section{Corrective gain and its decomposition}
+\label{sec:ws-gain}
+
+Write $\oplus$ for appending a turn pair to the transcript, so that
+$\ctxpre_{t+1} = \ctxpre_t \oplus (a_t, o_t)$. Almost every agent framework
+implements that literally, which is the design decision this paper is about.
+For a decision point $(\ctxpre, \afail, o^{\times})$ define
+\begin{equation}
+\Gain(\afail) \;=\; \log \pi(\afail \mid \ctxpre) \;-\;
+\log \pi\!\left(\afail \mid \ctxpre \oplus (\afail, o^{\times})\right),
+\label{eq:ws-gain}
+\end{equation}
+where $\log \pi(a \mid c) = \sum_i \log \pi(a_i \mid c, a_{<i})$. Both terms
+score \emph{the same string}, so the difference is exactly the change in the
+log-odds of writing that action again, and it is invariant to the action's
+length and to how the tokeniser splits it. $\Gain > 0$ is the behaviour the
+harness is designed to produce. $\Gain < 0$ we call \emph{feedback inversion}.
+
+Let $o^{\varnothing}$ be a \emph{valence-free} observation, which acknowledges
+the call but reports neither success nor failure. Then with
+$\copyterm = \log \pi(\afail \mid \ctxpre \oplus (\afail, o^{\varnothing}))
+- \log \pi(\afail \mid \ctxpre)$ and
+$\semterm = \log \pi(\afail \mid \ctxpre \oplus (\afail, o^{\times}))
+- \log \pi(\afail \mid \ctxpre \oplus (\afail, o^{\varnothing}))$,
+\begin{equation}
+-\Gain(\afail) \;=\; \copyterm + \semterm
+\label{eq:ws-decomp}
+\end{equation}
+by construction. $\copyterm$ isolates what merely \emph{having written the
+action} does, holding the feedback content neutral; $\semterm$ isolates what
+\emph{marking it as failed} adds, holding the surface form fixed.
+
+Equation~\ref{eq:ws-decomp} makes the design space concrete. If $\semterm$
+dominates, the model misread the error and the remedy is a better model or a
+clearer message. If $\copyterm$ dominates, message engineering cannot reach the
+problem, because the damage is done by the presence of the string rather than
+by anything said about it, and the remedies must be structural: remove the
+surface form from the context, or make it unreachable at decoding time.
+
+\section{Setup}
+\label{sec:ws-setup}
+
+\paragraph{Environments.}
+\emph{ToolShed} is a simulated office workspace with twelve typed tools and six
+task templates requiring two to four calls. Failing actions are constructed
+from the reference action by \NumToolshedOperators\ perturbation operators
+yielding \NumToolshedErrorTypes\ error families, so every model is probed on
+byte-identical items and a scaling curve cannot confound model size with item
+difficulty. We built it because the decomposition needs, for one fixed action,
+an observation reporting failure, one reporting success and one reporting
+nothing; standard agent benchmarks are built to score policies and do not
+expose counterfactual observations. \emph{CodeRepair} is the sanitised split of
+MBPP \citep{austin2021mbpp}, executed in a subprocess against the problem's own
+assertions, where failing programs are single-edit mutations and nothing about
+the error text is authored by us. It also exercises a regime ToolShed cannot:
+actions are whole functions, and a real traceback quotes the offending source
+line back at the model.
+
+\paragraph{Models and protocol.}
+\NumModels\ instruction-tuned checkpoints spanning
+\SmallestModel--\LargestModel\ across \NumFamilies\ families
+(\FamilyList), in float32 on a CPU with 17\,GB of RAM, which is what sets the
+parameter ceiling. Scoring is teacher-forced and deterministic. Items from one
+task share a prompt and a prefix, so every interval is a 95\% cluster bootstrap
+over \emph{tasks} ($10{,}000$ resamples); the headline family is Holm-corrected
+across models. A model/environment cell with fewer than 30 scored items is
+excluded from every table and fit.
+
+\section{Execution feedback inverts, and the string is why}
+\label{sec:ws-results}
+
+\input{tables/probe_main_toolshed}
+
+Table~\ref{tab:probe-main-toolshed} reports the gain and its decomposition on
+ToolShed. It is negative for every model, and the intervals exclude zero for
+\NumModelsNegativeG\ of \NumModelsToolshed. Two readouts make the size concrete
+without reference to nats. Over a fixed four-action candidate set the
+normalised probability of re-emitting the failed call rises from
+\PRepeatPreMean\ to \PRepeatPostMean; and greedy decoding, which is what the
+agent would actually have written next, reproduces the failed call token for
+token on \GreedyPostMean\ of items after the failure against \GreedyPreMean\
+before it.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.78\linewidth]{figures/fig3_decomposition}
+\caption{Where the inversion comes from. Bars decompose $-\Gain$ into the
+effect of the failed call being present in the context (blue) and the
+additional effect of marking it as failed (orange); black dots are the total.
+Error bars are 95\% cluster bootstrap intervals. If the problem were that the
+model does not understand the error, the orange bars would be large and
+negative.}
+\label{fig:ws-decomposition}
+\end{figure}
+
+The decomposition is the point, and Figure~\ref{fig:ws-decomposition} is the
+whole argument in one panel. $\copyterm$ accounts for \CopyShare\ of the
+total. $\semterm$ is small, and on ToolShed it is slightly \emph{positive},
+plausibly because explaining what went wrong requires naming the tool and the
+offending argument again; on CodeRepair it is slightly negative, so a traceback
+does push the model away from the program that produced it. We stress the
+second case because it fixes the interpretation: these models are not simply
+failing to read error messages. Whatever reading happens is swamped, by a
+median of \MedianCopySemRatio\ to one and by \MaxCopySemRatio\ to one at the
+extreme.
+
+\paragraph{Copying does not simply raise everything.}
+The correct action shares most of its tokens with the failed one, so its
+probability rises too, by \MeanRepair\ nats. What governs the next move is the
+margin, and the margin moves the wrong way: the gold-minus-failed gap shrinks
+by \MeanMarginShift\ nats once the failure is recorded. The normalised repeat
+probability is computed over a fixed candidate set, so a uniform lift cancels;
+it still rises sharply. And the greedy readout is a statement about the argmax,
+immune to uniform lifts by construction.
+
+\paragraph{Scale.}
+Within a family, where training data is held roughly fixed, the larger
+checkpoint has the milder gain, in both environments independently, and the
+weakening is driven by $\copyterm$ rather than $\semterm$: larger models copy
+less, they do not read the error better. A log-linear fit has slope
+\ScalingSlope\ nats per decade ($R^2 = \ScalingRsq$) and reaches zero at
+\ZeroCrossing, but we report that number in order to argue against it:
+refitting with each model held out moves the crossing from \ZeroCrossingLoMin\
+to \ZeroCrossingLoMax, a factor of \ZeroCrossingLoRatio\ decided by which six
+checkpoints were affordable. Whether the effect survives at 8B is the first
+question a reader with GPUs should ask, and the probe costs a few hundred
+forward passes per model to answer.
+
+\section{What moves the effect}
+\label{sec:ws-manip}
+
+If the attribution to surface form is right, the effect should respond to
+manipulations of the \emph{form} and be largely indifferent to manipulations of
+the \emph{message}. Table~\ref{tab:probe-manipulations} reports each variant as
+a \emph{paired} change against the standard harness on the same items.
+
+\input{tables/probe_manipulations}
+
+Message content is nearly inert. Shortening the error to a bare category name
+changes the quantity by \DTerseCI\ nats and expanding it with the tool
+signature and a corrective hint by \DVerboseCI; both intervals contain zero.
+Occurrence count is not inert. When the runtime echoes the offending call
+inside the error message, as a Python traceback does by default, repetition
+becomes \DEchoCI\ nats more likely. Adding information changes nothing; adding
+a second copy of the string changes something.
+
+Removing the surface form does the work. Replacing the call with a
+runtime-generated description moves the quantity by \DAbstractCI\ nats and
+drives the exact greedy repeat rate to zero for every model. Stripping our
+wording from that description, so the transcript reads only
+\texttt{[attempt 1 failed]}, recovers \DAbstractMinCI\ against
+\DAbstractMatchedCI\ for the full abstraction on the same models, so the
+benefit is the absence of the string rather than our glosses. A placebo in
+which a \emph{different} plausible-but-wrong call is recorded as having failed
+recovers \DPlaceboCI\ nats, a large majority but not all of the effect; since
+the distractor shares most of its tokens with the scored action, it leaks
+copying by construction and bounds the string-specific component from below.
+
+\section{Free-running rollouts}
+\label{sec:ws-agent}
+
+The probe holds the trajectory fixed. We also let a model act freely in
+ToolShed over \AgentNumTasks\ tasks for up to \AgentMaxSteps\ steps with greedy
+decoding, comparing \AgentNumHarnesses\ harnesses that differ only in what the
+model sees and how its next token is chosen.
+
+\input{tables/agent_main}
+
+Under the standard harness the agent solves \AgentVerbatimSuccess\ of tasks and
+\AgentVerbatimRepeat\ of its failed actions are byte-for-byte repeats. The
+prohibition does not reduce repetition (\DeltaInstrRepeat\ points, interval
+containing zero), agreeing with the probe. Clearing the context is the worst
+case: exact repetition rises to \AgentDropRepeat, a paired difference of
+\DeltaDropRepeat\ points, and task success does not improve. Both surface-form
+interventions reduce repetition, the decoder ban most cleanly, taking the exact
+rate to \AgentVerbBanRepeat\ (\DeltaVerbBanRepeat\ points) and loops from
+\AgentVerbatimStuck\ of rollouts to \AgentVerbBanStuck, at no cost in generated
+tokens.
+
+Ranked by loop rate the harnesses order exactly as the decomposition predicts:
+the two interventions acting on the failed call's surface form at the good end,
+the harness that deletes the failure at the bad end, the standard harness
+between. We report two things that cut against us. Task success does not follow
+that ordering, because at this scale repetition is a substantial but not
+majority share of what goes wrong: \ProseShare\ of actions are prose where a
+call was expected, which no arrangement of the transcript repairs. And the ban
+displaces repetition into paraphrase, which is why we report a canonical repeat
+rate alongside the exact one and do not recommend the ban alone.
+
+\section{Limitations and conclusion}
+\label{sec:ws-limits}
+
+The ladder stops at \LargestModel\ because of a memory limit, not a scientific
+choice, and the extrapolated crossing is unstable under leave-one-out, so we
+characterise the small-model regime and a direction of travel rather than a
+threshold. The rollout study is one model on \AgentNumTasks\ tasks; the
+intervals are correspondingly wide. Failing actions are constructed rather than
+sampled, which buys byte-identical items across the ladder at the cost of some
+realism, and the rollout study, where models generate their own failures, is
+where that trade is tested. ToolShed is ours; CodeRepair, whose observations
+are written by the Python interpreter, is the check on it and shows the same
+pattern.
+
+The claim we make is narrow. Execution feedback is not useless and agent
+transcripts should not be thrown away. But the standard way of \emph{delivering}
+that feedback hands a small model a strong reason to repeat itself and a weak
+reason not to, and a harness can keep the diagnosis while withholding the
+reason. For agents built on small models, which is where these effects are
+largest and where cost pressure is greatest, that is a change to the harness
+and not to the model.

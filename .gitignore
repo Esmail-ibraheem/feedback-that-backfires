@@ -33,3 +33,10 @@ Thumbs.db
 
 # Your original project brief, not part of the research artefact.
 prompt.md
+
+# LaTeX build products for the alternate wrappers.
+paper/preview_tmlr/
+paper/preview_ws/
+paper/main_tmlr.aux
+paper/main_ws.aux
+paper/*.bbl

@@ -1,0 +1,90 @@
+\section{Full results tables}
+\label{app:ws-full}
+
+The main text reports the headline quantities. This appendix carries the
+material the six-page limit excludes: the second environment, the repetition
+readouts, the robustness variants, the per-error-family breakdown, the probe
+conditions and perturbation operators in full, the verbatim prompts, and
+example trajectories under every harness.
+
+\paragraph{Program repair.}
+The same measurement on MBPP, where the observations are the Python
+interpreter's own output. Actions here are whole functions, an order of
+magnitude longer than tool calls, so raw nats are not comparable with
+ToolShed; divided by action length they are, and both environments land at
+close to one nat per action token.
+
+\input{tables/probe_main_coderepair}
+
+\paragraph{Repetition readouts.}
+$p_{\text{rep}}$ is the normalised probability of the failed call over the
+scored candidate set; \emph{greedy} is the fraction of items on which greedy
+decoding reproduces the failed call exactly.
+
+\input{tables/probe_repeat_toolshed}
+
+\input{tables/probe_repeat_coderepair}
+
+\paragraph{Robustness.}
+The assumption-light item-level sign statistic, the change in the
+gold-minus-failed margin, and the decomposition referenced to the counterfactual
+\emph{success} observation rather than the valence-free one. The two references
+bracket any reasonable notion of neutrality.
+
+\input{tables/probe_robustness}
+
+\section{Per-error-family results}
+\label{app:ws-by-error}
+
+The effect is present in every error family. A result concentrated in one would
+have suggested that the wording of a single error message, rather than the
+mechanism we describe, was responsible.
+
+\input{tables/probe_by_error}
+
+\section{Probe conditions and perturbation operators}
+\label{app:ws-conditions}
+
+Every condition shares one item's system prompt, goal and successful prefix
+byte for byte; only the observation the harness records differs.
+
+\input{tables/condition_reference}
+
+\input{tables/operator_reference}
+
+\section{Prompts}
+\label{app:ws-prompts}
+
+Emitted from the code rather than transcribed, so they cannot drift. Two
+typesetting conventions apply and nothing else has been altered: a line too
+long for the page is broken and the broken line ends in a backslash, and the
+few non-ASCII characters the prompts contain are transliterated, since the
+typewriter font has no glyph for them.
+
+\input{tables/prompts}
+
+\section{Example trajectories}
+\label{app:ws-traj}
+
+One task under every harness, chosen by rule: the task with the most exact
+repeats under the standard harness. It is a single worst-case task, so it
+illustrates rather than demonstrates, and it complicates the aggregates in two
+ways we would rather show than hide. The abstraction reduces repetition across
+the task set but does nothing on this item, and the instruction does nothing
+across the task set but changes the trajectory here.
+
+\input{tables/qualitative_appendix}
+
+\section{Cost}
+\label{app:ws-cost}
+
+Everything was produced on one laptop CPU (\CPUName, four physical cores,
+17\,GB RAM) with no GPU, in float32. The probe is built out of teacher-forced
+scoring rather than generation because on a CPU a single decoding step costs
+about as much as thirty scored positions; prefix reuse across conditions
+removes \CacheSaving\ of the token positions a naive implementation would push
+through the network. Both recommended interventions are close to free: the
+abstraction shortens the context and costs no extra model call, and the ban
+adds one pass over a short list per decoding step and no generated tokens.
+
+\input{tables/agent_cost}
