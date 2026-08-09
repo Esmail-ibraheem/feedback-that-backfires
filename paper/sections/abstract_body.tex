@@ -1,0 +1,34 @@
+Agent harnesses record a failed tool call and its error message in the
+transcript and ask the model to continue, on the reasonable assumption that the
+error is corrective information. We measure whether it is. Defining the
+\emph{corrective gain} of a failure record as the change in log-probability of
+re-emitting the action that just failed, we find the gain is \emph{negative} for
+every instruction-tuned model we tested (\NumModelsToolshed\ checkpoints,
+\SmallestModel--\LargestModel, \NumFamilies\ families) in two environments:
+simulated tool calling and MBPP program repair with real interpreter output.
+Normalised by action length the effect has the same size in both, about
+\GPerTokenTool\ nats per action token, a factor of \OddsPerToken\ in the odds of
+each token. It holds on \FracNegTool--\FracNegCode\ of individual items,
+not merely on average. Over a fixed candidate set the normalised probability of
+repeating the failed call rises from \PRepeatPreMean\ to \PRepeatPostMean, and
+greedy decoding reproduces the failed call token for token on \GreedyPostMean\
+of items after the failure versus \GreedyPreMean\ before it.
+Counterfactual observations, in which the same call is paired with a failure
+message, a success message, or a valence-free acknowledgement, separate two
+competing effects. The failed call's \emph{surface form} accounts for
+\CopyShare\ of the
+damage; the semantic contribution of marking it as failed is small and its sign
+is not even consistent across environments. The problem is therefore in the
+harness, not in the model's grasp of error messages, and that predicts which
+remedies can work. Replacing the verbatim call with a runtime-generated
+description of the failure removes \AbstractRemoved\ of the inversion at no
+token cost, and making previously-failed strings unreachable at the decoder acts
+on the same term. Two remedies that sound right do not act on it at all. An
+explicit ``do not repeat'' instruction leaves the measured quantity where it
+was; and deleting the failed attempt to retry from a clean context, the
+standard prescription for context contamination, is the worst harness we
+measured for repetition, because it restores precisely the context that produced
+the failure. What survives is narrow enough to be useful: the context after a
+failure must differ from the context before it, and the difference must not be
+the failed action. The study runs end to end on a CPU and all artefacts are
+released.

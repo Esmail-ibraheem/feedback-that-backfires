@@ -111,10 +111,9 @@ def write_by_error_table(out_dir: str, tables_dir: str, keep=None) -> None:
         # float up onto the previous page.
         r"\begin{table}[H]",
         r"\centering",
-        # Six model columns of "mean [lo, hi]" only fit the appendix text block
-        # at this size; \small overruns it.
-        r"\footnotesize",
-        r"\setlength{\tabcolsep}{2pt}",
+        # Sized by the wrapper; \small overruns the appendix text block.
+        r"\tblfontsmall",
+        r"\setlength{\tabcolsep}{\tblsepsmall}",
         "\\begin{tabular}{l " + " ".join(["c"] * len(models)) + "}",
         r"\toprule",
         "Error family & "

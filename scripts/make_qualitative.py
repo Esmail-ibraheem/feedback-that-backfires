@@ -25,7 +25,7 @@ from slmecho import tables  # noqa: E402
 # full page width: the in-text pair as a `figure*`, the appendix in a
 # \onecolumn appendix. That holds ~115 characters of \scriptsize typewriter,
 # less a 10-character "NN. [ERR] " prefix.
-MAXLEN = 104
+MAXLEN = 98
 
 #: The order the harnesses are discussed in, so the appendix reads the same way
 #: as the tables rather than alphabetically.

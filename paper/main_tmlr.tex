@@ -1,12 +1,20 @@
-% !TeX program = pdflatex
+% TMLR submission build.
 %
-% Build:  pdflatex main && bibtex main && pdflatex main && pdflatex main
+%   tectonic -X compile main_tmlr.tex
 %
-% The preamble deliberately sticks to packages present in a standard TeX Live /
-% MiKTeX installation so the manuscript compiles without fetching anything.
-\documentclass[10pt,twocolumn]{article}
+% This is a wrapper, not a fork: every section, table, figure and generated
+% number is the same file the two-column build in main.tex uses. Only the page
+% furniture differs. Anything that needs to say something different in the two
+% layouts belongs in a \newcommand here, not in a duplicated section file.
+%
+% `\usepackage{tmlr}` with no options is the anonymous form: the class replaces
+% the author block with "Anonymous authors / Paper under double-blind review"
+% and sets the "Under review as submission to TMLR" running head. Do NOT add
+% [accepted] or [preprint] for a submission.
+\documentclass{article}
 
-\usepackage[letterpaper,margin=0.85in,columnsep=0.28in]{geometry}
+\usepackage{tmlr/tmlr}
+
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}   % \textminus: a real minus in tables, not a hyphen
@@ -14,9 +22,9 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{float}      % [H]: appendix reference tables stay under their heading
 \usepackage{multirow}
 \usepackage{makecell}
+\usepackage{float}      % [H]: appendix reference tables stay under their heading
 \usepackage{xcolor}
 \usepackage{microtype}
 \usepackage{caption}
@@ -33,11 +41,11 @@
 
 % Compact confidence-interval notation used by every generated table.
 \newcommand{\ci}[2]{{\scriptsize\,[#1,\,#2]}}
-% How the generated tables are sized. Set here rather than in the generators so
-% the same table files serve this layout and the TMLR one.
-\newcommand{\tblfont}{\footnotesize}
+% TMLR's text block is 6.5in against the 6.9in the two-column build gives a
+% full-width float, so the wide tables step down one size here.
+\newcommand{\tblfont}{\scriptsize}
 \newlength{\tblsep}\setlength{\tblsep}{3pt}
-\newcommand{\tblfontsmall}{\footnotesize}
+\newcommand{\tblfontsmall}{\scriptsize}
 \newlength{\tblsepsmall}\setlength{\tblsepsmall}{2pt}
 % Shorthands for the quantities defined in Section 3.
 \newcommand{\afail}{a^{\times}}
@@ -53,26 +61,21 @@
 % placeholder rather than to a plausible-looking number.
 \input{tables/facts}
 
-\title{\bf Feedback That Backfires:\\[2pt]
-Why Small Language Model Agents Repeat\\ the Call They Just Watched Fail}
+% No manual break: TMLR's title box is 6.5in wide and wraps this cleanly on its
+% own. A forced `\\` here strands a single word on the second line.
+\title{Feedback That Backfires: Why Small Language Model Agents Repeat
+the Call They Just Watched Fail}
 
-\author{%
-  Esmail Gumaan\\[2pt]
-  \small Code, data and every number in this paper:\\
-  \small \url{https://github.com/Esmail-ibraheem/feedback-that-backfires}
-}
-\date{}
+% Ignored while anonymous; kept so the accepted build needs no edit here.
+\author{\name Esmail Gumaan \email mokevara.strawhat@gmail.com}
 
 \begin{document}
 
-% Title block and abstract span the full page width; the body is two-column.
-\twocolumn[
-  \begin{@twocolumnfalse}
-    \maketitle
-    \input{sections/abstract}
-    \vspace{1.2em}
-  \end{@twocolumnfalse}
-]
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract_body}
+\end{abstract}
 
 \input{sections/introduction}
 \input{sections/related}
@@ -87,12 +90,10 @@ Why Small Language Model Agents Repeat\\ the Call They Just Watched Fail}
 \input{sections/limitations}
 \input{sections/conclusion}
 
-\bibliographystyle{plainnat}
+\bibliographystyle{tmlr/tmlr}
 \bibliography{references}
 
-\clearpage
 \appendix
-\onecolumn
 \input{sections/appendix}
 
 \end{document}

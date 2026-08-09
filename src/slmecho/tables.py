@@ -75,9 +75,11 @@ def measures_by_model(
         # size a reader would accept, and silently overflows into the neighbour.
         r"\begin{table*}[t]",
         r"\centering",
-        r"\footnotesize",
-        # Wide tables need every point of horizontal slack they can get.
-        r"\setlength{\tabcolsep}{3pt}",
+        # Font size and column separation are chosen by the manuscript wrapper,
+        # not here: the same table has to fit both a 6.9in two-column spread and
+        # TMLR's 6.5in single-column measure.
+        r"\tblfont",
+        r"\setlength{\tabcolsep}{\tblsep}",
         f"\\begin{{tabular}}{{{col_spec}}}",
         r"\toprule",
         "Model & Params & " + " & ".join(headers[m] for m in measures) + r" \\",
@@ -140,9 +142,11 @@ def conditions_table(
         PREAMBLE_HINT,
         r"\begin{table*}[t]",
         r"\centering",
-        r"\footnotesize",
-        # Wide tables need every point of horizontal slack they can get.
-        r"\setlength{\tabcolsep}{3pt}",
+        # Font size and column separation are chosen by the manuscript wrapper,
+        # not here: the same table has to fit both a 6.9in two-column spread and
+        # TMLR's 6.5in single-column measure.
+        r"\tblfont",
+        r"\setlength{\tabcolsep}{\tblsep}",
         f"\\begin{{tabular}}{{{col_spec}}}",
         r"\toprule",
         "Harness variant & " + " & ".join(labels[m] for m in models) + r" \\",
