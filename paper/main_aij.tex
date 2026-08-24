@@ -1,0 +1,171 @@
+% Artificial Intelligence (AIJ, Elsevier) submission build.
+%
+%   tectonic -X compile main_aij.tex
+%
+% This is a wrapper, not a fork: every section, table, figure and generated
+% number is the same file the other builds use. Only the page furniture and the
+% Elsevier-mandated declarations differ.
+%
+% Why these class options, against the journal's own instructions:
+%
+%   elsarticle  AIJ's guide for authors: "You are recommended to use the
+%               Elsevier article class elsarticle.cls ... and BibTeX".
+%   preprint    AIJ's formatting requirements ask for a single-column layout
+%               and warn against "small-font, double-column conference
+%               proceeding formats". `preprint` is elsarticle's single-column
+%               submission layout with wide margins for annotation.
+%   11pt        AIJ sets a minimum 11pt body font.
+%   (numbers)   elsarticle defaults to numeric citations; AIJ lists references
+%               "in alphabetical order under the first author's name and
+%               numbered consecutively by arabic numbers", which is what
+%               elsarticle-num produces. Do NOT add the `authoryear` option.
+%
+% Review is single-anonymized at AIJ -- "Reviewers know the identity of the
+% authors" -- so unlike the TMLR and NeurIPS builds this one is named, and the
+% artefact link stays in.
+\documentclass[preprint,11pt]{elsarticle}
+
+\usepackage[T1]{fontenc}
+\usepackage{times}      % Elsevier's house font, and ~10% shorter than Latin Modern
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}   % \textminus: a real minus in tables, not a hyphen
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{float}      % [H]: appendix reference tables stay under their heading
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+% natbib is loaded by elsarticle itself; loading it again clashes.
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+% Line numbers for reviewers. AIJ asks for a layout that "facilitates margin
+% annotations"; this is the other half of that. Delete for the accepted version.
+\usepackage{lineno}
+\linenumbers
+
+% elsarticle's stock `preprint' block is 5.3in wide, and the generated tables --
+% which are built once and shared by all three manuscript builds -- do not fit
+% in it at any legible size: the same sources produce 3 overfull boxes at 6.5in
+% and 35 at 5.3in. One-inch margins on Letter restore the 6.5in measure, keep
+% the single-column 11pt layout AIJ asks for, and still leave a full inch for
+% the margin annotations the journal wants room for.
+\usepackage[letterpaper,margin=1in]{geometry}
+
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+
+% Compact confidence-interval notation used by every generated table, and by
+% the prose, through the facts macros. The other builds set it in \scriptsize,
+% which on an 11pt base is 8pt: larger than the 6.5pt the widest appendix
+% tables are set in, so the intervals were pushing those tables off the page
+% while shrinking the table font did nothing. \smaller is relative, so one
+% definition serves an 11pt paragraph and a 6.5pt table cell.
+\usepackage{relsize}
+\newcommand{\ci}[2]{{\smaller[1]\,[#1,\,#2]}}
+% Same 6.5in measure as the TMLR build, but an 11pt rather than a 10pt base, so
+% the named sizes all land one notch too large: \scriptsize is 8pt here against
+% 7pt there, and the widest tables run 50pt past the margin. Ask for the
+% absolute size instead. The journal's 11pt minimum is a body-text rule; tables
+% and the verbatim transcripts are set smaller in every Elsevier AI paper.
+\newcommand{\tblfont}{\fontsize{7}{8.4}\selectfont}
+\newlength{\tblsep}\setlength{\tblsep}{1.5pt}
+\newcommand{\tblfontsmall}{\fontsize{6.5}{7.8}\selectfont}
+\newcommand{\verbfont}{\fontsize{7}{8.4}\selectfont}
+\newlength{\tblsepsmall}\setlength{\tblsepsmall}{2pt}
+
+% Let TeX stretch interword space rather than overhang the margin. The appendix
+% is full of unbreakable code identifiers and at 11pt several lines have no
+% legal break point at all.
+\setlength{\emergencystretch}{3em}
+% Shorthands for the quantities defined in Section 3.
+\newcommand{\afail}{a^{\times}}
+\newcommand{\agold}{a^{\checkmark}}
+\newcommand{\Gain}{G}
+\newcommand{\copyterm}{\Delta_{\mathrm{copy}}}
+\newcommand{\semterm}{\Delta_{\mathrm{sem}}}
+\newcommand{\ctxpre}{C}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[#1]}}}
+
+% Every inline number in this manuscript is a macro generated from results/raw
+% by scripts/make_facts.py. Anything not yet measured expands to a visible
+% placeholder rather than to a plausible-looking number.
+\input{tables/facts}
+
+\journal{Artificial Intelligence}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Feedback That Backfires: Why Small Language Model Agents Repeat
+the Call They Just Watched Fail}
+
+\author{Esmail Gumaan\corref{cor1}}
+\ead{gumaan01@ads.uni-passau.de}
+\cortext[cor1]{Corresponding author.}
+% Elsevier asks for the full postal address of each affiliation. Institution,
+% city and country are here; add the faculty's street line and postcode before
+% submitting, since nothing in this repository is allowed to guess an address.
+\address{Faculty of Computer Science and Mathematics, University of Passau,
+Passau, Germany}
+
+\begin{abstract}
+\input{sections/abstract_body}
+\end{abstract}
+
+\begin{keyword}
+language model agent \sep
+execution feedback \sep
+tool use \sep
+in-context learning \sep
+repetition \sep
+copying bias \sep
+small language model \sep
+agent harness
+\end{keyword}
+
+\end{frontmatter}
+
+% elsarticle does not subtract the title-page footnotes (\corref, \ead) from the
+% space available on page one, so the page comes out ~32pt overfull and the
+% footnotes print on top of the "Preprint submitted to" footer. Shortening page
+% one by hand is the fix; nothing else here changes.
+\enlargethispage{-4\baselineskip}
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/problem}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/analysis}
+\input{sections/agent}
+\input{sections/efficiency}
+\input{sections/failure}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+\input{sections/declarations}
+
+% AIJ's stated reference style is "alphabetical order under the first author's
+% name and numbered consecutively by arabic numbers". Both elsarticle-num and
+% elsarticle-num-names number in order of first citation instead, which is the
+% one thing that description rules out; abbrvnat sorts and abbreviates given
+% names to initials, matching the guide's own example. Formatting beyond that is
+% not binding -- "the reference style used by the journal will be applied to the
+% accepted article by Elsevier at the proof stage".
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

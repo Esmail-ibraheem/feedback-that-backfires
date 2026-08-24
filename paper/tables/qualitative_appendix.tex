@@ -1,5 +1,5 @@
 \textbf{qwen2.5-0.5b, harness=verbatim}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -7,10 +7,10 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \textbf{qwen2.5-0.5b, harness=verbatim-instr}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] read_file(path='observations/54.6806.txt')
@@ -18,10 +18,10 @@ goal: agent-0011  solved=False
 4. [ERR] list_files(folder='observations')
 5. [ok ] list_files(folder='drafts')
 6. [ok ] list_files(folder='drafts')
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \textbf{qwen2.5-0.5b, harness=drop}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -29,10 +29,10 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \textbf{qwen2.5-0.5b, harness=abstract}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -40,10 +40,10 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \textbf{qwen2.5-0.5b, harness=verbatim-ban}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -51,10 +51,10 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806), error='write_file: SyntaxError: co~
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806), error='write_file: SyntaxError: co~
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806), error='write_file: argument value ~
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \textbf{qwen2.5-0.5b, harness=abstract-ban}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -62,4 +62,4 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806).replace('.', ',').replace('-', ','))
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806).replace('.', ',').replace('-', ','))
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806).replace('.', ',').replace('-', ','))
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}

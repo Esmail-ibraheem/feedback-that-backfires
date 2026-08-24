@@ -19,7 +19,7 @@ from slmecho.harness import ERROR_GLOSS, NEGATIVE_INSTRUCTION, abstract_failure 
 from slmecho.probe import CONDITION_DOC, ProbeItem, load_items  # noqa: E402
 
 
-# Courier at \scriptsize fits about this many characters across the one-column
+# Courier at \verbfont fits about this many characters across the one-column
 # appendix text block. Anything longer runs off the page instead of wrapping,
 # because `verbatim` never breaks a line.
 WRAP = 106
@@ -53,9 +53,9 @@ def verbatim_block(title: str, body: str, label: str) -> str:
     return "\n".join(
         [
             f"\\paragraph{{{title}}}",
-            r"\begin{scriptsize}\begin{verbatim}",
+            r"{\verbfont\begin{verbatim}",
             *wrapped,
-            r"\end{verbatim}\end{scriptsize}",
+            r"\end{verbatim}}",
         ]
     )
 
@@ -117,9 +117,9 @@ def main() -> None:
     for op in sorted(examples):
         gold, bad, err = examples[op]
         lines.append(
-            f"\\texttt{{{esc(op)}}} & \\texttt{{\\scriptsize {breakable(gold)}}} & "
-            f"\\texttt{{\\scriptsize {breakable(bad)}}} & "
-            f"\\texttt{{\\scriptsize {esc(err)}}} \\\\"
+            f"\\texttt{{{esc(op)}}} & \\texttt{{\\verbfont {breakable(gold)}}} & "
+            f"\\texttt{{\\verbfont {breakable(bad)}}} & "
+            f"\\texttt{{\\verbfont {esc(err)}}} \\\\"
         )
     lines += [r"\bottomrule", r"\end{tabular}",
               r"\caption{Perturbation operators used to build failing actions in "

@@ -1,5 +1,5 @@
 \paragraph{ToolShed system prompt (probe)}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 You are a tool-using assistant working inside a small office workspace. Solve the user's request by \
 calling tools one at a time.
 
@@ -55,38 +55,38 @@ Available tools:
     value: numeric value
     from_unit: source unit
     to_unit: target unit
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \paragraph{Format demonstration appended in the agent study}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 
 A valid reply looks exactly like this, with no prefix or explanation:
 list_files(folder='notes')
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \paragraph{CodeRepair system prompt}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 You are a Python programmer. The user gives a task and the tests that will be run against your code.
 
 Rules:
 - Reply with one Python function definition and nothing else.
 - Do not include the tests, comments, explanations or markdown fences.
 - Use exactly the function name that appears in the tests.
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \paragraph{Do-not-repeat instruction}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 Important: some of your earlier tool calls failed. Do not repeat a call that has already failed; change \
 the call before trying again.
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \paragraph{Failure abstraction (example)}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 [attempt 1 failed: find_contact --- an argument name was not recognised; that call is not repeatable]
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \paragraph{Error-family glosses used by the abstraction}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 arity_error              -> wrong number of arguments
 attendee_not_found       -> no such attendee
 contact_not_found        -> no such contact
@@ -107,4 +107,4 @@ type_error               -> an argument had the wrong type
 unexpected_argument      -> an argument name was not recognised
 unknown_tool             -> no such tool
 unsupported_conversion   -> that conversion is not supported
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}

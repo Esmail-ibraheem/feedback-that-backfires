@@ -23,7 +23,7 @@ from slmecho import tables  # noqa: E402
 # the next, and truncating to a single column reduces every line to the same
 # `write_file(path='reports/conversion.md', co~`. Both blocks therefore get the
 # full page width: the in-text pair as a `figure*`, the appendix in a
-# \onecolumn appendix. That holds ~115 characters of \scriptsize typewriter,
+# \onecolumn appendix. That holds ~115 characters of \verbfont typewriter,
 # less a 10-character "NN. [ERR] " prefix.
 MAXLEN = 98
 
@@ -51,7 +51,7 @@ def load(raw_dir: str) -> Dict[str, List[dict]]:
 
 
 def render(rollout: dict, title: str) -> str:
-    lines = [r"\textbf{" + esc(title) + "}", r"\begin{scriptsize}\begin{verbatim}"]
+    lines = [r"\textbf{" + esc(title) + "}", r"{\verbfont\begin{verbatim}"]
     lines.append(f"goal: {rollout.get('task_id')}  solved={rollout['solved']}")
     for i, (a, ok) in enumerate(zip(rollout["actions"], rollout["ok"]), 1):
         flag = "ok " if ok else "ERR"
@@ -59,7 +59,7 @@ def render(rollout: dict, title: str) -> str:
         if len(body) > MAXLEN:
             body = body[: MAXLEN - 1] + "~"  # ~ marks a truncated action
         lines.append(f"{i}. [{flag}] {body}")
-    lines += [r"\end{verbatim}\end{scriptsize}"]
+    lines += [r"\end{verbatim}}"]
     return "\n".join(lines)
 
 

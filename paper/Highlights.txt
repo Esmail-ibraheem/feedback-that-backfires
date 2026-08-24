@@ -1,0 +1,7 @@
+Highlights
+
+- Small language model agents repeat a tool call they have just watched fail
+- Execution feedback lowers the correct call's log-odds in all 6 models tested
+- A decomposition attributes 83% of the effect to copying, not to inference
+- Removing the failed call from the transcript removes 76% of the penalty
+- Blocking exact repeats cuts agent repetition from 31% to 8%

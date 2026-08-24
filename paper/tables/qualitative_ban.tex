@@ -2,7 +2,7 @@
 \centering
 \begin{minipage}{\textwidth}
 \textbf{qwen2.5-0.5b, harness=verbatim}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -10,10 +10,10 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 
 \textbf{qwen2.5-0.5b, harness=verbatim-ban}
-\begin{scriptsize}\begin{verbatim}
+{\verbfont\begin{verbatim}
 goal: agent-0011  solved=False
 1. [ok ] convert_units(value=88, from_unit='km', to_unit='mi')
 2. [ERR] write_file(path='reports/conversion.md', content=str(54.6806))
@@ -21,7 +21,7 @@ goal: agent-0011  solved=False
 4. [ERR] write_file(path='reports/conversion.md', content=str(54.6806), error='write_file: SyntaxError: co~
 5. [ERR] write_file(path='reports/conversion.md', content=str(54.6806), error='write_file: SyntaxError: co~
 6. [ERR] write_file(path='reports/conversion.md', content=str(54.6806), error='write_file: argument value ~
-\end{verbatim}\end{scriptsize}
+\end{verbatim}}
 \end{minipage}
 \caption{The same task and model under the standard harness and under the decoder ban. Selected by rule, not by eye: the task with the most exact repeats under the standard harness for which a matching rollout exists under the comparison harness. Actions are shown as the parser received them.}
 \label{fig:qualitative-ban}
