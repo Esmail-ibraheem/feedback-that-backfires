@@ -26,14 +26,9 @@
 \usepackage{natbib}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
-% Zapf Dingbats, part of every TeX installation through psnfss: \ding{41} is the
-% envelope that goes next to the corresponding author's name.
-\usepackage{pifont}
-
-% Corresponding-author mark: a small envelope superscripted after the name,
-% hyperlinked to the address. Printed papers keep the address readable below the
-% affiliation; on screen either one opens a mail client.
-\newcommand{\mailto}[1]{\href{mailto:#1}{\raisebox{0.6ex}{\footnotesize\ding{41}}}}
+% Corresponding-author mark: the asterisk after the name is the link to the
+% address, so the title block carries no separate email line.
+\newcommand{\mailto}[1]{\href{mailto:#1}{\textsuperscript{*}}}
 
 \captionsetup{font=small,labelfont=bf,skip=4pt}
 \setlength{\abovecaptionskip}{4pt}
@@ -66,11 +61,9 @@
 Why Small Language Model Agents Repeat\\ the Call They Just Watched Fail}
 
 \author{%
-  Esmail Gumaan\,\mailto{gumaan01@ads.uni-passau.de}\\[2pt]
+  Esmail Gumaan\mailto{gumaan01@ads.uni-passau.de}\\[2pt]
   \small Faculty of Computer Science and Mathematics\\
-  \small University of Passau, Germany\\
-  \small \href{mailto:gumaan01@ads.uni-passau.de}
-              {\texttt{gumaan01@ads.uni-passau.de}}\\[4pt]
+  \small University of Passau, Germany\\[4pt]
   \small Code, data and every number in this paper:\\
   \small \url{https://github.com/Esmail-ibraheem/feedback-that-backfires}
 }
