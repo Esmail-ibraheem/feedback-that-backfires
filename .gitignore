@@ -40,3 +40,4 @@ paper/preview_ws/
 paper/main_tmlr.aux
 paper/main_ws.aux
 paper/*.bbl
+dist/
